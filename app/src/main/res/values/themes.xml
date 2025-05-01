@@ -1,0 +1,12 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.DV_Estoque" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:colorControlHighlight">@color/purple_200</item>
+        <item name="selectableItemBackground">@drawable/selectable_item_background</item>
+    </style>
+
+    <style name="Theme.DV_Estoque" parent="Base.Theme.DV_Estoque" />
+</resources>

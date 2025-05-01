@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/btn_nav_initial"
+        android:icon="@drawable/home1"
+        android:title="Inicial"/>
+    <item
+        android:id="@+id/btn_nav_cad_prod"
+        android:icon="@drawable/newproduct"
+        android:title="Cadastrar Produtos"/>
+    <item
+        android:id="@+id/btn_nav_list_pro"
+        android:icon="@drawable/list"
+        android:title="Listar Produtos"/>
+    <item
+        android:id="@+id/btn_nav_table_pro"
+        android:icon="@drawable/tasklist"
+        android:title="Tabela de Produtos"/>
+
+</menu>
