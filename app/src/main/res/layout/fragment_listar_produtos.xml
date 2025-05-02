@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,52 +7,76 @@
     tools:context=".ListaProdutos">
 
     <!-- Cabeçalho -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar2"
+        android:layout_width="0dp"
+        android:layout_height="139dp"
+        android:background="@color/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintBottom_toTopOf="@+id/listaProdutos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.050000012" />
+
+    <!-- Lista de produtos -->
+
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="0dp"
-        android:layout_height="125dp"
+        android:layout_height="114dp"
+        android:layout_marginTop="24dp"
         android:orientation="horizontal"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:src="@drawable/logo02"
-            android:contentDescription="Logo do app"/>
+
+            android:layout_width="100dp"
+            android:layout_height="96dp"
+            android:contentDescription="Logo do app"
+            android:src="@drawable/logo02" />
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="100dp"
             android:layout_weight="1"
+            android:gravity="center"
             android:orientation="horizontal"
-            android:paddingTop="25dp">
-
-            <ImageButton
-                android:id="@+id/buttonPesquisar"
-                android:layout_width="50dp"
-                android:layout_height="70dp"
-                android:src="@drawable/ic_pesquisar"
-                android:contentDescription="Pesquisar"
-                android:background="?attr/selectableItemBackgroundBorderless"/>
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="10dp"
+            android:textAlignment="center">
 
             <EditText
                 android:id="@+id/areaPesquisa"
                 android:layout_width="0dp"
-                android:layout_height="70dp"
+                android:layout_height="56dp"
+                android:layout_margin="4dp"
                 android:layout_weight="1"
+                android:background="@drawable/bg_rounded_gray"
                 android:hint="Pesquisar"
+                android:imeOptions="actionSearch"
                 android:paddingStart="10dp"
-                android:background="@color/cray3"
-                android:textColor="@color/black"
+                android:textColor="@color/dados"
+                android:textColorHint="@color/colorText"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:imeOptions="actionSearch"/>
+                android:textStyle="normal" />
+
+            <ImageButton
+                android:id="@+id/buttonPesquisar"
+                android:layout_width="54dp"
+                android:layout_height="51dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Pesquisar"
+                android:src="@drawable/ic_pesquisar" />
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Lista de produtos -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listaProdutos"
         android:layout_width="0dp"
@@ -62,7 +85,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar2"
         tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

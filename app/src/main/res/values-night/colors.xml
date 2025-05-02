@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="dark_primary">#2E2E2E</color>
+    <color name="my_dark_secondary">#1F1F1F</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="text_primary">#E0E0E0</color>
+    <color name="text_secondary">#B0B0B0</color>
+
+
+
+    <!-- cores que mudam -->
+    <color name="colorText">#E2E2E2</color>
+    <color name="card_orenge">#4A3F2C</color>
+    <color name="card_blue">#2D3A59</color>
+    <color name="card_green">#294D3A</color>
+    <color name="card_gray">#4D4D4D</color>
+    <color name="dados">#DCDCDC</color>
+    <color name="titulo">#4CAF50</color>
+    <color name="menuline">#4CAF50</color>
+    <color name="button_color">#4CAF50</color>
+
+</resources>

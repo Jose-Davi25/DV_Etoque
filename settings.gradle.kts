@@ -21,4 +21,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "DV_Estoque"
 include(":app")
- 

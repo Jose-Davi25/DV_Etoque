@@ -16,4 +16,27 @@
     <color name="red">#FF0000</color>
     <color name="red2">#DF0101</color>
     <color name="red3">#FE2E2E</color>
+
+    <color name="dark_primary">#2E2E2E</color>
+    <color name="my_dark_secondary">#1F1F1F</color>
+    <color name="text_primary">#E0E0E0</color>
+    <color name="text_secondary">#B0B0B0</color>
+
+    <!-- Cores do tema claro -->
+    <color name="colorPrimary">#4CAF50</color>
+    <color name="colorPrimaryContainer">#A5D6A7</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorOnPrimaryContainer">#000000</color>
+
+    <!-- cores que mudam -->
+    <color name="colorText">#666666</color>
+    <color name="card_orenge">#FFF3E0</color>
+    <color name="card_blue">#ECF8FF</color>
+    <color name="card_green">#E8F5E9</color>
+    <color name="card_gray">#EEEEEE</color>
+    <color name="dados">#4D4D4D</color>
+    <color name="titulo">#FB4141</color>
+    <color name="menuline">#FB4141</color>
+    <color name="button_color">#4CAF50</color>
+
 </resources>

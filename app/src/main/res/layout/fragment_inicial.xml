@@ -31,11 +31,12 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="157dp"
-            android:layout_height="42dp"
+            android:layout_width="174dp"
+            android:layout_height="48dp"
             android:layout_marginTop="24dp"
+            android:fontFamily="serif"
             android:text="Estoque+"
-            android:textColor="#DE5B5B"
+            android:textColor="@color/titulo"
             android:textSize="34sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -74,7 +75,7 @@
                     android:layout_width="99dp"
                     android:layout_height="wrap_content"
                     android:text="Produtos   Cadastrados:"
-                    android:textColor="#666666"
+                    android:textColor="@color/colorText"
                     android:textSize="15sp" />
 
                 <TextView
@@ -82,8 +83,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
+                    android:textColor="@color/dados"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
@@ -118,7 +119,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Total Em Estoque:"
-                    android:textColor="#666666"
+                    android:textColor="@color/colorText"
                     android:textSize="15sp" />
 
                 <TextView
@@ -126,8 +127,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
+                    android:textColor="@color/dados"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
@@ -163,7 +164,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Estoque Baixo:"
-                    android:textColor="#666666"
+                    android:textColor="@color/colorText"
                     android:textSize="15sp" />
 
                 <TextView
@@ -171,8 +172,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
+                    android:textColor="@color/dados"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
@@ -207,7 +208,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Movimen. Hoje:"
-                    android:textColor="#666666"
+                    android:textColor="@color/colorText"
                     android:textSize="15sp" />
 
                 <TextView
@@ -215,8 +216,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
+                    android:textColor="@color/dados"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
@@ -224,39 +225,39 @@
         <!-- Botões -->
         <Button
             android:id="@+id/ver_estoque"
-            android:layout_width="150dp"
+            android:layout_width="180dp"
             android:layout_height="140dp"
-            android:layout_marginStart="54dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginTop="55dp"
+            android:background="@drawable/rounded_button"
             android:drawableTop="@drawable/ic_product"
             android:gravity="center"
             android:padding="10dp"
             android:text="VER ESTOQUE"
+            app:iconSize="18dp"
             app:layout_constraintEnd_toStartOf="@+id/pesquisar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
         <Button
             android:id="@+id/pesquisar"
-            android:layout_width="150dp"
+            android:layout_width="180dp"
             android:layout_height="140dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="54dp"
+            android:layout_marginTop="55dp"
+            android:background="@drawable/rounded_button"
             android:drawableTop="@drawable/ic_pesquisar"
             android:gravity="center"
             android:padding="10dp"
             android:text="PESQUISAR"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ver_estoque"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
         <Button
             android:id="@+id/adicionar_produto"
-            android:layout_width="150dp"
+            android:layout_width="180dp"
             android:layout_height="140dp"
-            android:layout_marginStart="54dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rounded_button"
             android:drawableTop="@drawable/ic_adicionar"
             android:gravity="center"
             android:padding="10dp"
@@ -267,22 +268,24 @@
 
         <Button
             android:id="@+id/categorias"
-            android:layout_width="150dp"
+            android:layout_width="180dp"
             android:layout_height="140dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="54dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/rounded_button"
             android:drawableTop="@drawable/ic_category"
             android:gravity="center"
             android:padding="10dp"
             android:text="CATEGORIAS"
+            app:iconTint="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/adicionar_produto"
             app:layout_constraintTop_toBottomOf="@+id/pesquisar" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar2"
             android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:background="?attr/colorControlHighlight"
+            android:layout_height="140dp"
+            android:background="@color/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
             app:layout_constraintEnd_toEndOf="parent"
