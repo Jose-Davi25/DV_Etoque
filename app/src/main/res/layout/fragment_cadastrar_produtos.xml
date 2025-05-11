@@ -14,7 +14,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="42dp"
-            android:background="?attr/colorPrimary"
+            android:background="@color/colorPrimary"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme" />
 
@@ -38,7 +38,6 @@
             android:gravity="center_vertical"
             android:paddingStart="20dp"
             android:text="Editar Produto"
-            android:textAlignment="viewStart"
             android:textColor="@color/material_dynamic_neutral20"
             android:textSize="20sp"
             android:textStyle="bold" />
