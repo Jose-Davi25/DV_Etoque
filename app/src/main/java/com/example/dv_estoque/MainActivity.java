@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
                     // Fragmento com a tabela de produtos (visualização em grade ou formato de tabela)
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.FrameLayout, new TabelaProdutos())
+                            .replace(R.id.FrameLayout, new TabelaSaidaProdutos())
                             .commit();
                 }
 
