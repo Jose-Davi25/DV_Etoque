@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
     public void recarregarListaProdutos() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.containerPrincipal, new ListaProdutos())
+                .replace(R.id.FrameLayout, new ListaProdutos()) // ✅ ID correto
                 .commit();
     }
 }
