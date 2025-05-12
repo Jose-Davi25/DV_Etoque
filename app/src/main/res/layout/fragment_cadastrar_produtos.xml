@@ -1,160 +1,180 @@
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D2B4F2">
+    android:background="@color/colorPrimaryContainer">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="fill_horizontal"
+        android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#8BC34A"
+            android:layout_height="42dp"
+            android:background="@color/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:background="@color/colorPrimary"
             android:gravity="center"
-            android:padding="12dp"
             android:text="Cadastrar Produto"
-            android:textColor="@android:color/black"
+            android:textAlignment="center"
+            android:textColor="@color/text_primary"
             android:textSize="24sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="match_parent"
+            android:layout_width="400dp"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical"
             android:paddingStart="20dp"
             android:text="Editar Produto"
-            android:textAlignment="viewStart"
+            android:textColor="@color/material_dynamic_neutral20"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="411dp"
+            android:layout_height="149dp"
+            android:layout_gravity="end"
             android:layout_margin="16dp"
-            android:paddingStart="30dp"
-            android:orientation="horizontal">
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="30dp">
 
             <ImageView
                 android:id="@+id/proImagemView"
-                android:layout_width="126dp"
+                android:layout_width="163dp"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
-                android:background="#FFF"
+                android:layout_marginEnd="25dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_image_placeholder"/>
+                android:src="@drawable/ic_image" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <Button
                     android:id="@+id/buttonGaleria"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#6C4A9F"
+                    android:layout_width="131dp"
+                    android:layout_height="59dp"
+                    android:backgroundTint="@color/titulo"
                     android:text="Galeria"
                     android:textColor="#FFF"
-                    app:cornerRadius="20dp"/>
+                    app:cornerRadius="20dp" />
+
                 <Button
                     android:id="@+id/buttonCamera"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
                     android:layout_marginTop="8dp"
-                    android:backgroundTint="#6C4A9F"
+                    android:backgroundTint="@color/titulo"
                     android:text="Câmera"
                     android:textColor="#FFF"
-                    app:cornerRadius="20dp"/>
+                    app:cornerRadius="20dp" />
             </LinearLayout>
         </LinearLayout>
 
         <EditText
             android:id="@+id/proCadNome"
-            android:layout_width="match_parent"
+            android:layout_width="369dp"
             android:layout_height="50dp"
-            android:layout_margin="16dp"
-            android:background="@color/white"
-            android:drawableStart="@drawable/ic_nome"
+            android:background="@drawable/edit_text_background"
+            android:drawableStart="@drawable/ic_labeling"
+            android:drawablePadding="8dp"
             android:hint="Nome"
-            android:padding="4dp"/>
+            android:padding="8dp"
+            android:textColor="@color/cray1"
+            android:textColorHint="@color/cray1" />
 
         <Spinner
             android:id="@+id/proCadCategoria"
-            android:layout_width="match_parent"
+            android:layout_width="370dp"
             android:layout_height="50dp"
             android:layout_margin="16dp"
             android:layout_marginTop="16dp"
-            android:background="@color/white"
-            android:popupBackground="@color/white"/>
+            android:background="@drawable/edit_text_background"
+            android:padding="5dp"
+            android:popupBackground="@color/white"
+            android:textColorHint="@color/cray1" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="369dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="12dp"
+            android:orientation="horizontal"
             android:weightSum="2">
 
             <EditText
                 android:id="@+id/proCadQuantidade"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
                 android:layout_weight="1"
-                android:background="@color/white"
-                android:backgroundTint="#FFFFFF"
-                android:drawableStart="@drawable/ic_caixa"
+                android:background="@drawable/edit_text_background"
+                android:drawableStart="@drawable/ic_warehouse"
+                android:drawablePadding="8dp"
                 android:hint=" Quant. Total"
                 android:inputType="number"
                 android:minHeight="48dp"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:textColor="@color/cray1"
+                android:textColorHint="@color/cray1" />
 
             <EditText
                 android:id="@+id/proCadPreco"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:background="@color/white"
-                android:backgroundTint="#FFFFFF"
+                android:background="@drawable/edit_text_background"
                 android:drawableStart="@drawable/ic_money"
+                android:drawablePadding="8dp"
                 android:hint=" Preço"
                 android:inputType="numberDecimal"
                 android:minHeight="48dp"
-                android:padding="8dp" />
+                android:padding="8dp"
+                android:textColor="@color/cray1"
+                android:textColorHint="@color/cray1" />
         </LinearLayout>
+
+        <!-- Botão Atualizar (inicialmente oculto) -->
 
         <Button
             android:id="@+id/buttonSalvarProduto"
-            android:layout_width="178dp"
+            android:layout_width="185dp"
             android:layout_height="60dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
-            android:background="@drawable/plus"
+            android:background="@drawable/rounded_button"
             android:drawableLeft="@drawable/newproduct"
             android:paddingHorizontal="24dp"
             android:text="Salvar"
-            android:textSize="20sp"
-            android:textColor="#FFF"/>
+            android:textColor="#FFF"
+            android:textSize="20sp" />
 
-        <!-- Botão Atualizar (inicialmente oculto) -->
         <Button
             android:id="@+id/buttonAtualizarProduto"
-            android:layout_width="178dp"
+            android:layout_width="180dp"
             android:layout_height="70dp"
-            android:background="@drawable/plus"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/rounded_button"
             android:drawableLeft="@drawable/newproduct"
             android:paddingHorizontal="24dp"
-            android:layout_marginTop="24dp"
             android:text="Atualizar"
             android:textColor="@android:color/white"
             android:textSize="20sp"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </LinearLayout>
 </ScrollView>

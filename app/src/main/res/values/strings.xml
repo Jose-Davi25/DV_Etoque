@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">DV_Estoque</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <!-- res/values/strings.xml -->
+    <string name="label_produto">%1$s</string>
+    <string name="label_quantidade">%1$d</string>
+    <string name="label_total">R$ %1$s</string>
+    <string name="label_data">%1$s</string>
+
 </resources>
