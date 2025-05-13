@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,19 +9,30 @@
     tools:context=".TabelaSaidaProdutos">
 
     <LinearLayout
-        android:id="@+id/linearLayout5"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <!-- Título da tela -->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar4"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:title="Histórico de Saídas"
+            app:titleTextColor="@android:color/white"/>
+
+        <!-- Botão de limpar -->
+        <Button
+            android:id="@+id/btnLimpar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"/>
+            android:text="Limpar Tudo"
+            android:backgroundTint="#fff00000"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:layout_margin="8dp"/>
 
-        <!-- Cabeçalho -->
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,10 +83,11 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerSaidas"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:padding="8dp" />
+            android:paddingVertical="8dp"
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

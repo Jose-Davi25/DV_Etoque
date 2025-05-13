@@ -105,26 +105,47 @@ public class ProdutoDAO {
             db.close();
         }
     }
-
-
+    /**
+     * Obtém todas as saídas registradas
+     * @return Lista de modelos de saída
+     */
     @SuppressLint("Range")
     public List<SaidaModel> obterTodasSaidas() {
-        List<SaidaModel> lista = new ArrayList<>();
+        List<SaidaModel> saidas = new ArrayList<>();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM saida_logica ORDER BY dataSaida DESC", null);
-        if (cursor.moveToFirst()) {
-            do {
-                String proNome = cursor.getString(cursor.getColumnIndex("proNome"));
-                int quantidadeVendida = cursor.getInt(cursor.getColumnIndex("quantidadeVendida"));
-                double precoTotal = cursor.getDouble(cursor.getColumnIndex("precoTotal"));
-                String dataSaida = cursor.getString(cursor.getColumnIndex("dataSaida"));
+        Cursor cursor = db.rawQuery("SELECT saidaId, proNome, quantidadeVendida, precoTotal, dataSaida FROM saida_logica", null);
 
-                SaidaModel saida = new SaidaModel(proNome, quantidadeVendida, precoTotal, dataSaida);
-                lista.add(saida);
-            } while (cursor.moveToNext());
+        while (cursor.moveToNext()) {
+            SaidaModel saida = new SaidaModel(
+                    cursor.getInt(0), // saidaId
+                    cursor.getString(1), // proNome
+                    cursor.getInt(2), // quantidadeVendida
+                    cursor.getDouble(3), // precoTotal
+                    cursor.getString(4) // dataSaida
+            );
+            saidas.add(saida);
         }
 
         cursor.close();
-        return lista;
+        return saidas;
+    }
+    /**
+     * Exclui uma saída específica
+     * @param saidaId ID da saída a ser excluída
+     * @return Verdadeiro se bem sucedido
+     */
+    // EXCLUIR UMA SAIDA ESPECIFICA
+    public boolean excluirSaida(int saidaId) {
+        int linhasAfetadas = db.delete("saida_logica", "saidaId = ?", new String[]{String.valueOf(saidaId)});
+        return linhasAfetadas > 0;
+    }
+    /**
+     * Limpa todo o histórico de saídas
+     * @return Verdadeiro se bem sucedido
+     */
+    // EXCLUI TODAS AS SAIDAS
+    public boolean limparTodasSaidas(){
+        int linhasAfetadas = db.delete("saida_logica",null, null);
+        return linhasAfetadas >0;
     }
 }
