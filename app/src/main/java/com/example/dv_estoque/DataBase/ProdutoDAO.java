@@ -44,7 +44,7 @@ public class ProdutoDAO {
 
                 if (atualizado > 0) {
                     // Registrar na tabela de saída lógica
-                    String dataAtual = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+                    String dataAtual = new SimpleDateFormat("dd/MM/yyyy | HH:mm:ss", new Locale("pt", "BR")).format(new Date());
                     registrarSaidaLogica(nomeProduto, quantidadeSaida, precoUnitario, dataAtual);
                     return true;
                 }

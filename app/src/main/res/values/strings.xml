@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DV_Estoque</string>
+    <string name="app_name">DV Estoque+</string>
     <!-- TODO: Remove or change this placeholder text -->
     <!-- res/values/strings.xml -->
     <string name="label_produto">%1$s</string>

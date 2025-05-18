@@ -1,19 +1,105 @@
 package com.example.dv_estoque;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.example.dv_estoque.DataBase.DataBase;
 
 public class Inicial extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_inicial, container, false);
+        View view = inflater.inflate(R.layout.fragment_inicial, container, false);
+
+
+        TextView tvProdutos = view.findViewById(R.id.tvProdutosCadastrados);
+        int totalProdutos = buscarProdutosCadastrados(getContext());
+        tvProdutos.setText(String.valueOf(totalProdutos));
+
+        TextView tvTotalEstoque = view.findViewById(R.id.tvTotalEstoque);
+        int totalEstoque = buscarTotalEstoque(getContext());
+        tvTotalEstoque.setText(String.valueOf(totalEstoque));
+
+        TextView tvEstoqueBaixo = view.findViewById(R.id.tvEstoqueBaixo);
+        int totalEstoqueBaixo = buscarEstoqueBaixo(getContext());
+        tvEstoqueBaixo.setText(String.valueOf(totalEstoqueBaixo));
+
+        TextView tvMovimentacoesHoje = view.findViewById(R.id.tvMovimentacoesHoje);
+        int totalMovimentacoesHoje = buscarMovimentacoesHoje(getContext());
+        tvMovimentacoesHoje.setText(String.valueOf(totalMovimentacoesHoje));
+
+        return view;
     }
+    public int buscarProdutosCadastrados(Context context) {
+        SQLiteDatabase db = new DataBase(context).getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM produtos", null);
+        int total = 0;
+        if (cursor.moveToFirst()) {
+            total = cursor.getInt(0);
+        }
+        cursor.close();
+        db.close();
+        return total;
+    }
+    public int buscarTotalEstoque(Context context) {
+        SQLiteDatabase db = new DataBase(context).getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT SUM(proQtddeTotal) FROM produtos", null);
+        int total = 0;
+        if (cursor.moveToFirst()) {
+            total = cursor.getInt(0);
+        }
+        cursor.close();
+        db.close();
+        return total;
+    }
+    public int buscarEstoqueBaixo(Context context) {
+        SQLiteDatabase db = new DataBase(context).getReadableDatabase();
+        // Define o limite do que é considerado "baixo"
+        int limite = 10;
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM produtos WHERE proQtddeTotal <= ?", new String[]{String.valueOf(limite)});
+        int total = 0;
+        if (cursor.moveToFirst()) {
+            total = cursor.getInt(0);
+        }
+        cursor.close();
+        db.close();
+        return total;
+    }
+    public int buscarMovimentacoesHoje(Context context) {
+        SQLiteDatabase db = new DataBase(context).getReadableDatabase();
+
+        // Captura apenas a data de hoje no formato brasileiro (sem hora)
+        String dataHoje = new SimpleDateFormat("dd/MM/yyyy", new Locale("pt", "BR")).format(new Date());
+
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT(*) FROM saida_logica WHERE dataSaida LIKE ?",
+                new String[]{dataHoje + "%"} // Vai pegar tudo de hoje, independente da hora
+        );
+
+        int total = 0;
+        if (cursor.moveToFirst()) {
+            total = cursor.getInt(0);
+        }
+
+        cursor.close();
+        db.close();
+        return total;
+    }
+
 }
+
+
