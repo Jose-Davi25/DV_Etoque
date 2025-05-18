@@ -3,6 +3,7 @@ package com.example.dv_estoque;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,38 +16,38 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.dv_estoque.DataBase.DataBase;
 
 import java.io.ByteArrayOutputStream;
-
+import java.util.ArrayList;
+import java.util.List;
 public class CadastrarProdutos extends Fragment {
 
-    // Variáveis para guardar os dados do produto e elementos da interface
-    private int proId = 0; // ID do produto, usado para edição
+    private int proId = 0;
     private EditText proNome, proquantidade, proPreco;
     private ImageView proImagem;
     private Button btnSalvar, btnAtualizar, btnGaleria;
+    private Spinner spinnerCategoria;
     private DataBase db;
-    private SQLiteDatabase conexao;
-    private static final int PICK_IMAGE = 100; // Código para requisição de imagem da galeria
 
-    // Método chamado ao criar a visualização do fragmento
+    private static final int PICK_IMAGE = 100;
+
+    // Para guardar categorias e seus IDs
+    private List<String> categoriasNome;
+    private List<Integer> categoriasId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cadastrar_produtos, container, false);
-        inicializarComponentes(view); // Inicializa os componentes da tela
-        configurarListeners();        // Define as ações dos botões
-        verificarModoEdicao();        // Verifica se está no modo de edição ou cadastro
-        return view;
-    }
 
-    // Inicializa os componentes da interface do usuário
-    private void inicializarComponentes(View view) {
+        // Inicializa componentes
         proNome = view.findViewById(R.id.proCadNome);
         proImagem = view.findViewById(R.id.proImagemView);
         proquantidade = view.findViewById(R.id.proCadQuantidade);
@@ -54,17 +55,45 @@ public class CadastrarProdutos extends Fragment {
         btnSalvar = view.findViewById(R.id.buttonSalvarProduto);
         btnAtualizar = view.findViewById(R.id.buttonAtualizarProduto);
         btnGaleria = view.findViewById(R.id.buttonGaleria);
-        db = new DataBase(requireContext()); // Cria instância do banco de dados
+        spinnerCategoria = view.findViewById(R.id.proCadCategoria);
+
+        db = new DataBase(requireContext());
+
+        carregarCategoriasNoSpinner();
+
+        configurarListeners();
+        verificarModoEdicao();
+
+        return view;
     }
 
-    // Configura os cliques dos botões
+    private void carregarCategoriasNoSpinner() {
+        categoriasNome = new ArrayList<>();
+        categoriasId = new ArrayList<>();
+
+        SQLiteDatabase leitura = db.getReadableDatabase();
+        Cursor cursor = leitura.rawQuery("SELECT catId, catNome FROM categorias ORDER BY catNome", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                categoriasId.add(cursor.getInt(0));
+                categoriasNome.add(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        leitura.close();
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, categoriasNome);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategoria.setAdapter(adapter);
+    }
+
     private void configurarListeners() {
-        btnGaleria.setOnClickListener(v -> abrirGaleria());     // Abre a galeria de imagens
-        btnSalvar.setOnClickListener(v -> salvarProduto());     // Salva um novo produto
-        btnAtualizar.setOnClickListener(v -> atualizarProduto());// Atualiza um produto existente
+        btnGaleria.setOnClickListener(v -> abrirGaleria());
+        btnSalvar.setOnClickListener(v -> salvarProduto());
+        btnAtualizar.setOnClickListener(v -> atualizarProduto());
     }
 
-    // Verifica se há argumentos passados para saber se está em modo de edição
     private void verificarModoEdicao() {
         if (getArguments() != null) {
             proId = getArguments().getInt("proId");
@@ -72,71 +101,80 @@ public class CadastrarProdutos extends Fragment {
 
             if (imagem != null) {
                 Bitmap bitmap = BitmapFactory.decodeByteArray(imagem, 0, imagem.length);
-                proImagem.setImageBitmap(bitmap); // Exibe imagem do produto
+                proImagem.setImageBitmap(bitmap);
             }
 
-            // Preenche os campos com os dados recebidos
             proNome.setText(getArguments().getString("proNome"));
             proquantidade.setText(String.valueOf(getArguments().getInt("proQtddeTotal")));
             proPreco.setText(String.valueOf(getArguments().getDouble("proPreco")));
 
-            // Esconde botão de salvar e mostra botão de atualizar
+            // Selecionar categoria no spinner, se passado o catId
+            int catIdSelecionado = getArguments().getInt("catId", -1);
+            if (catIdSelecionado != -1) {
+                int pos = categoriasId.indexOf(catIdSelecionado);
+                if (pos != -1) {
+                    spinnerCategoria.setSelection(pos);
+                }
+            }
+
             btnSalvar.setVisibility(View.GONE);
             btnAtualizar.setVisibility(View.VISIBLE);
         }
     }
 
-    // Abre a galeria para o usuário escolher uma imagem
     private void abrirGaleria() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, PICK_IMAGE);
     }
 
-    // Método chamado quando o usuário escolhe uma imagem da galeria
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE && data != null) {
             Uri imageUri = data.getData();
-            proImagem.setImageURI(imageUri); // Exibe a imagem escolhida
+            proImagem.setImageURI(imageUri);
         }
     }
 
-    // Salva os dados do produto no banco de dados
     private void salvarProduto() {
         String nome = proNome.getText().toString().trim();
         String quantidadeStr = proquantidade.getText().toString().trim();
         String precoStr = proPreco.getText().toString().trim();
 
-        // Verifica se todos os campos estão preenchidos
         if (nome.isEmpty() || quantidadeStr.isEmpty() || precoStr.isEmpty()) {
             Toast.makeText(getContext(), "Preencha todos os campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // Pega catId selecionado
+        int posCategoria = spinnerCategoria.getSelectedItemPosition();
+        if (posCategoria == Spinner.INVALID_POSITION) {
+            Toast.makeText(getContext(), "Selecione uma categoria", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int catId = categoriasId.get(posCategoria);
+
         try {
             int quantidade = Integer.parseInt(quantidadeStr);
             double preco = Double.parseDouble(precoStr);
 
-            SQLiteDatabase db = this.db.getWritableDatabase();
+            SQLiteDatabase escrita = db.getWritableDatabase();
             ContentValues valores = new ContentValues();
             valores.put("proNome", nome);
             valores.put("proQtddeTotal", quantidade);
             valores.put("proPreco", preco);
+            valores.put("catId", catId);
 
-            // Converte imagem para byte array, se houver
             if (proImagem.getDrawable() != null) {
                 valores.put("proImg", ImageViewToByte(proImagem));
             }
 
-            // Insere no banco de dados
-            long resultado = db.insert("produtos", null, valores);
-            db.close();
+            long resultado = escrita.insert("produtos", null, valores);
+            escrita.close();
 
-            // Verifica se inserção foi bem-sucedida
             if (resultado != -1) {
                 Toast.makeText(getContext(), "Produto adicionado", Toast.LENGTH_SHORT).show();
-                limparCampos(); // Limpa os campos após salvar
+                limparCampos();
             } else {
                 Toast.makeText(getContext(), "Erro ao adicionar produto", Toast.LENGTH_SHORT).show();
             }
@@ -147,7 +185,6 @@ public class CadastrarProdutos extends Fragment {
         }
     }
 
-    // Atualiza os dados do produto existente
     private void atualizarProduto() {
         String nome = proNome.getText().toString().trim();
         String quantidadeStr = proquantidade.getText().toString().trim();
@@ -158,34 +195,39 @@ public class CadastrarProdutos extends Fragment {
             return;
         }
 
+        int posCategoria = spinnerCategoria.getSelectedItemPosition();
+        if (posCategoria == Spinner.INVALID_POSITION) {
+            Toast.makeText(getContext(), "Selecione uma categoria", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int catId = categoriasId.get(posCategoria);
+
         try {
             int quantidade = Integer.parseInt(quantidadeStr);
             double preco = Double.parseDouble(precoStr);
 
-            SQLiteDatabase db = this.db.getWritableDatabase();
+            SQLiteDatabase escrita = db.getWritableDatabase();
             ContentValues valores = new ContentValues();
             valores.put("proNome", nome);
             valores.put("proQtddeTotal", quantidade);
             valores.put("proPreco", preco);
+            valores.put("catId", catId);
 
             if (proImagem.getDrawable() != null) {
                 valores.put("proImg", ImageViewToByte(proImagem));
             }
 
-            // Atualiza a linha com base no ID do produto
-            int linhasAfetadas = db.update("produtos", valores, "proId = ?", new String[]{String.valueOf(proId)});
-            db.close();
+            int linhasAfetadas = escrita.update("produtos", valores, "proId = ?", new String[]{String.valueOf(proId)});
+            escrita.close();
 
             if (linhasAfetadas > 0) {
                 Toast.makeText(getContext(), "Produto atualizado", Toast.LENGTH_SHORT).show();
-                limparCampos(); // Limpa os campos após atualizar
+                limparCampos();
 
-                // Atualiza a lista de produtos no fragment principal
                 if (getActivity() != null) {
                     ((MainActivity) getActivity()).recarregarListaProdutos();
                 }
 
-                // Volta para o fragmento anterior
                 if (getParentFragmentManager().getBackStackEntryCount() > 0) {
                     getParentFragmentManager().popBackStack();
                 }
@@ -195,20 +237,19 @@ public class CadastrarProdutos extends Fragment {
         } catch (NumberFormatException e) {
             Toast.makeText(getContext(), "Valores inválidos", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(getContext(), "Erro ao atualizar", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Erro ao atualizar produto", Toast.LENGTH_SHORT).show();
         }
     }
 
-    // Limpa todos os campos do formulário e reseta imagem
     private void limparCampos() {
         proNome.setText("");
         proquantidade.setText("");
         proPreco.setText("");
-        proImagem.setImageResource(R.drawable.product); // Define imagem padrão
+        proImagem.setImageResource(R.drawable.product);
+        spinnerCategoria.setSelection(0);
         proId = 0;
     }
 
-    // Converte imagem do ImageView em array de bytes (para salvar no banco de dados)
     private byte[] ImageViewToByte(ImageView produtoImagem) {
         try {
             Bitmap bitmap = ((BitmapDrawable) produtoImagem.getDrawable()).getBitmap();
