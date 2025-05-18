@@ -1,6 +1,8 @@
 package com.example.dv_estoque;
 
+import android.app.backup.BackupManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        backupBancoNuvem();
 
         // Habilita o modo de tela cheia com suporte a bordas (para dispositivos mais novos)
         EdgeToEdge.enable(this);
@@ -98,5 +102,12 @@ public class MainActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.FrameLayout, new ListaProdutos()) // ✅ ID correto
                 .commit();
+    }
+
+    // FAZ O BACKUP ATOMATICO PRA NUVEM DRIVEE
+    private void backupBancoNuvem() {
+        BackupManager  backupManager = new BackupManager(this);
+        backupManager.dataChanged();
+        Log.d("Backup", "Solicitado");
     }
 }
