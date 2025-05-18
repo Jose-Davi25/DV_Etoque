@@ -31,11 +31,11 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="174dp"
+            android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginTop="24dp"
             android:fontFamily="serif"
-            android:text="Estoque+"
+            android:text="DV Estoque+"
             android:textColor="@color/titulo"
             android:textSize="34sp"
             android:textStyle="bold"
@@ -168,7 +168,7 @@
                     android:textSize="15sp" />
 
                 <TextView
-                    android:id="@+id/tvEstoqueCritico"
+                    android:id="@+id/tvEstoqueBaixo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
@@ -212,7 +212,7 @@
                     android:textSize="15sp" />
 
                 <TextView
-                    android:id="@+id/tvMovimentacaoHoje"
+                    android:id="@+id/tvMovimentacoesHoje"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0"
