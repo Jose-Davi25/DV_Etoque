@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,17 +21,21 @@ import com.example.dv_estoque.DataBase.DataBase;
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.appcompat.app.AlertDialog;
+
 public class CategoriaActivity extends AppCompatActivity {
 
     private RecyclerView recyclerCategorias;
     private CategoriaAdapter adapter;
     private List<String> listaCategorias;
+    private CategoriaAdapter.OnItemClickListener listener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_categoria);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -42,7 +46,27 @@ public class CategoriaActivity extends AppCompatActivity {
         recyclerCategorias.setLayoutManager(new LinearLayoutManager(this));
 
         listaCategorias = buscarCategorias();
-        adapter = new CategoriaAdapter(listaCategorias);
+
+        listener = new CategoriaAdapter.OnItemClickListener() {
+            @Override
+            public void onItemLongClick(String categoria) {
+                new AlertDialog.Builder(CategoriaActivity.this)
+                        .setTitle("Excluir categoria")
+                        .setMessage("Tem certeza que deseja excluir a categoria \"" + categoria + "\"?")
+                        .setPositiveButton("Sim", (dialog, which) -> {
+                            excluirCategoria(categoria);
+                            listaCategorias.clear();
+                            listaCategorias.addAll(buscarCategorias());
+                            adapter.notifyDataSetChanged();
+                            Toast.makeText(CategoriaActivity.this, "Categoria excluída", Toast.LENGTH_SHORT).show();
+                        })
+                        .setNegativeButton("Não", null)
+                        .show();
+            }
+        };
+
+
+        adapter = new CategoriaAdapter(listaCategorias, listener);
         recyclerCategorias.setAdapter(adapter);
 
         Button btnNovaCategoria = findViewById(R.id.btnNovaCategoria);
@@ -65,6 +89,11 @@ public class CategoriaActivity extends AppCompatActivity {
         cursor.close();
         db.close();
         return categorias;
+    }
+    private void excluirCategoria(String nomeCategoria) {
+        SQLiteDatabase db = new DataBase(this).getWritableDatabase();
+        db.delete("categorias", "catNome = ?", new String[]{nomeCategoria});
+        db.close();
     }
 
     @Override
