@@ -95,7 +95,8 @@
             android:hint="Nome"
             android:padding="8dp"
             android:textColor="@color/cray1"
-            android:textColorHint="@color/cray1" />
+            android:textColorHint="#808080"
+            android:textSize="16dp" />
 
         <Spinner
             android:id="@+id/proCadCategoria"
@@ -124,28 +125,30 @@
                 android:drawableStart="@drawable/ic_warehouse"
                 android:drawablePadding="8dp"
                 android:hint=" Quant. Total"
+                android:textSize="16dp"
                 android:inputType="number"
                 android:minHeight="48dp"
                 android:padding="8dp"
                 android:textColor="@color/cray1"
-                android:textColorHint="@color/cray1" />
+                android:textColorHint="#808080" />
 
             <EditText
                 android:id="@+id/proCadPreco"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/edit_text_background"
                 android:drawableStart="@drawable/ic_money"
                 android:drawablePadding="8dp"
-                android:hint=" Preço"
+                android:hint="Preço"
                 android:inputType="numberDecimal"
+                android:digits="0123456789,"
                 android:minHeight="48dp"
                 android:padding="8dp"
                 android:textColor="@color/cray1"
-                android:textColorHint="@color/cray1" />
+                android:textColorHint="#808080"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <!-- Botão Atualizar (inicialmente oculto) -->

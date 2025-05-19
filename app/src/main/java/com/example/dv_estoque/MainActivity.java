@@ -4,6 +4,7 @@ import android.app.backup.BackupManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.FrameLayout;
 
 import androidx.activity.EdgeToEdge;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         backupBancoNuvem();
+
 
         // Habilita o modo de tela cheia com suporte a bordas (para dispositivos mais novos)
         EdgeToEdge.enable(this);

@@ -262,12 +262,12 @@
             android:gravity="center"
             android:padding="10dp"
             android:text="ADICIONAR PRODUTO"
-            app:layout_constraintEnd_toStartOf="@+id/categorias"
+            app:layout_constraintEnd_toStartOf="@+id/btnCategorias"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ver_estoque" />
 
         <Button
-            android:id="@+id/categorias"
+            android:id="@+id/btnCategorias"
             android:layout_width="180dp"
             android:layout_height="140dp"
             android:layout_marginTop="30dp"
