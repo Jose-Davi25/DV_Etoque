@@ -7,20 +7,26 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dv_estoque.DataBase.DataBase;
@@ -28,6 +34,8 @@ import com.example.dv_estoque.DataBase.DataBase;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+
 public class CadastrarProdutos extends Fragment {
 
     private int proId = 0;
@@ -59,17 +67,47 @@ public class CadastrarProdutos extends Fragment {
 
         db = new DataBase(requireContext());
 
-        carregarCategoriasNoSpinner();
+        // Configura o campo de preço para aceitar vírgulas
+        configurarCampoPreco();
 
+        carregarCategoriasNoSpinner();
         configurarListeners();
         verificarModoEdicao();
 
         return view;
     }
 
+    private void configurarCampoPreco() {
+        proPreco.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Apenas validação básica
+                String currentText = s.toString();
+
+                // Verifica se há mais de uma vírgula
+                if (currentText.replaceAll("[^,]", "").length() > 1) {
+                    // Remove vírgula extra
+                    String newText = currentText.substring(0, currentText.length() - 1);
+                    proPreco.setText(newText);
+                    proPreco.setSelection(newText.length());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+    }
+
     private void carregarCategoriasNoSpinner() {
         categoriasNome = new ArrayList<>();
         categoriasId = new ArrayList<>();
+
+        // Adiciona o hint como primeiro item
+        categoriasNome.add("Selecione uma categoria");
+        categoriasId.add(-1);
 
         SQLiteDatabase leitura = db.getReadableDatabase();
         Cursor cursor = leitura.rawQuery("SELECT catId, catNome FROM categorias ORDER BY catNome", null);
@@ -86,6 +124,26 @@ public class CadastrarProdutos extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, categoriasNome);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCategoria.setAdapter(adapter);
+
+        // Personaliza a cor do hint
+        spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (view != null) {
+                    TextView textView = (TextView) view;
+                    if (position == 0) {
+                        textView.setTextColor(Color.GRAY);
+                        textView.setTextSize(16f);
+                    } else {
+                        textView.setTextColor(Color.BLACK);
+                        textView.setTextSize(16f);
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {}
+        });
     }
 
     private void configurarListeners() {
@@ -106,9 +164,12 @@ public class CadastrarProdutos extends Fragment {
 
             proNome.setText(getArguments().getString("proNome"));
             proquantidade.setText(String.valueOf(getArguments().getInt("proQtddeTotal")));
-            proPreco.setText(String.valueOf(getArguments().getDouble("proPreco")));
 
-            // Selecionar categoria no spinner, se passado o catId
+            // Formata o preço com vírgula para exibição
+            double preco = getArguments().getDouble("proPreco");
+            proPreco.setText(String.format(Locale.getDefault(), "%.2f", preco).replace(".", ","));
+
+            // Selecionar categoria no spinner
             int catIdSelecionado = getArguments().getInt("catId", -1);
             if (catIdSelecionado != -1) {
                 int pos = categoriasId.indexOf(catIdSelecionado);
@@ -141,47 +202,76 @@ public class CadastrarProdutos extends Fragment {
         String quantidadeStr = proquantidade.getText().toString().trim();
         String precoStr = proPreco.getText().toString().trim();
 
+        // Validação dos campos obrigatórios
         if (nome.isEmpty() || quantidadeStr.isEmpty() || precoStr.isEmpty()) {
             Toast.makeText(getContext(), "Preencha todos os campos", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Pega catId selecionado
+        // Validação da categoria
         int posCategoria = spinnerCategoria.getSelectedItemPosition();
-        if (posCategoria == Spinner.INVALID_POSITION) {
-            Toast.makeText(getContext(), "Selecione uma categoria", Toast.LENGTH_SHORT).show();
+        if (posCategoria <= 0) {
+            Toast.makeText(getContext(), "Selecione uma categoria válida", Toast.LENGTH_SHORT).show();
             return;
         }
-        int catId = categoriasId.get(posCategoria);
 
         try {
+            // Validação e conversão da quantidade
             int quantidade = Integer.parseInt(quantidadeStr);
-            double preco = Double.parseDouble(precoStr);
+            if (quantidade < 0) {
+                Toast.makeText(getContext(), "Quantidade não pode ser negativa", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
+            // Validação e formatação do preço
+            precoStr = precoStr.replace(",", ".");
+            if (precoStr.startsWith(".") || precoStr.endsWith(".")) {
+                Toast.makeText(getContext(), "Formato de preço inválido", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            double preco = Double.parseDouble(precoStr);
+            if (preco <= 0) {
+                Toast.makeText(getContext(), "Preço deve ser maior que zero", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Preparação dos valores para o banco de dados
             SQLiteDatabase escrita = db.getWritableDatabase();
             ContentValues valores = new ContentValues();
             valores.put("proNome", nome);
             valores.put("proQtddeTotal", quantidade);
             valores.put("proPreco", preco);
-            valores.put("catId", catId);
+            valores.put("catId", categoriasId.get(posCategoria));
 
-            if (proImagem.getDrawable() != null) {
+            // Tratamento da imagem
+            if (proImagem.getDrawable() != null &&
+                    !((BitmapDrawable)proImagem.getDrawable()).getBitmap().sameAs(
+                            BitmapFactory.decodeResource(getResources(), R.drawable.product))) {
                 valores.put("proImg", ImageViewToByte(proImagem));
             }
 
+            // Inserção no banco de dados
             long resultado = escrita.insert("produtos", null, valores);
             escrita.close();
 
             if (resultado != -1) {
-                Toast.makeText(getContext(), "Produto adicionado", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Produto cadastrado com sucesso", Toast.LENGTH_SHORT).show();
                 limparCampos();
+
+                // Atualiza a lista de produtos se estiver em uma MainActivity
+                if (getActivity() instanceof MainActivity) {
+                    ((MainActivity) getActivity()).recarregarListaProdutos();
+                }
             } else {
-                Toast.makeText(getContext(), "Erro ao adicionar produto", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Falha ao cadastrar produto", Toast.LENGTH_SHORT).show();
             }
+
         } catch (NumberFormatException e) {
-            Toast.makeText(getContext(), "Valores inválidos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Formato numérico inválido", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(getContext(), "Erro ao salvar produto", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Erro: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
     }
 
@@ -196,7 +286,7 @@ public class CadastrarProdutos extends Fragment {
         }
 
         int posCategoria = spinnerCategoria.getSelectedItemPosition();
-        if (posCategoria == Spinner.INVALID_POSITION) {
+        if (posCategoria <= 0) {
             Toast.makeText(getContext(), "Selecione uma categoria", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -204,7 +294,7 @@ public class CadastrarProdutos extends Fragment {
 
         try {
             int quantidade = Integer.parseInt(quantidadeStr);
-            double preco = Double.parseDouble(precoStr);
+            double preco = Double.parseDouble(precoStr.replace(",", "."));
 
             SQLiteDatabase escrita = db.getWritableDatabase();
             ContentValues valores = new ContentValues();
@@ -237,7 +327,7 @@ public class CadastrarProdutos extends Fragment {
         } catch (NumberFormatException e) {
             Toast.makeText(getContext(), "Valores inválidos", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
-            Toast.makeText(getContext(), "Erro ao atualizar produto", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Erro ao atualizar produto: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
