@@ -1,16 +1,32 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.DV_Estoque" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <!-- Base application theme -->
+    <style name="Base.Theme.DV_Estoque" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Cores primárias -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/cray1</item>
+        <item name="colorAccent">@color/black</item>
+
+        <!-- Configurações da Toolbar -->
+        <item name="toolbarStyle">@style/Widget.AppCompat.Toolbar</item>
+        <item name="searchViewStyle">@style/Widget.AppCompat.SearchView</item>
+
+        <!-- Configurações gerais -->
         <item name="android:windowBackground">@color/white</item>
-        <item name="android:colorControlHighlight">@color/purple_200</item>
         <item name="selectableItemBackground">@drawable/selectable_item_background</item>
 
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorOnPrimary">@color/colorOnPrimary</item>
-
+        <!-- Manter compatibilidade com Material Design -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.DV_Estoque" parent="Base.Theme.DV_Estoque" />
+    <style name="Theme.DV_Estoque" parent="Base.Theme.DV_Estoque">
+        <!-- Adicionar configurações específicas do Material3 se necessário -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryDark</item>
+    </style>
+
+    <!-- Estilo adicional para a SearchView -->
+    <style name="CustomSearchView" parent="Widget.AppCompat.SearchView">
+        <item name="queryBackground">@color/white</item>
+        <item name="searchHintIcon">@drawable/ic_pesquisar</item>
+    </style>
 </resources>

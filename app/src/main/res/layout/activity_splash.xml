@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="#454343"
     android:gravity="center"
-    android:background="@color/red4"
+    android:orientation="vertical"
     tools:context=".SplashActivity">
-    
+
     <ImageView
-        android:layout_width="350dp"
+        android:layout_width="match_parent"
         android:layout_height="350dp"
-        android:src="@drawable/logo03"/>
-    
+        android:src="@drawable/logo06" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Bem Vindo"
+        android:text="   Bem Vindo"
+        android:textColor="@color/black"
         android:textSize="48sp"
         android:textStyle="bold"
-        android:textColor="@color/black"/>
+        android:fontFamily="sans-serif-condensed-medium"/>
 
 </LinearLayout> 

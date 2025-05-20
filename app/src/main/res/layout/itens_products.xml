@@ -13,9 +13,11 @@
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
 
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="147dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@drawable/edit_text_background"
         android:gravity="center|fill"
         android:orientation="horizontal"
@@ -40,9 +42,9 @@
                 android:src="@drawable/ic_image" />
         </androidx.cardview.widget.CardView>
 
-
+<!--        android:layout_width="140dp"-->
         <LinearLayout
-            android:layout_width="160dp"
+            android:layout_width="145dp"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="vertical"
@@ -110,8 +112,8 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
             android:orientation="vertical">

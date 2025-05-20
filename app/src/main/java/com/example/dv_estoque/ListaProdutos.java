@@ -4,12 +4,18 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.appcompat.widget.SearchView;
+
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +37,10 @@ public class ListaProdutos extends Fragment implements ProAdapter.OnProActionLis
     private RecyclerView recyclerView;
     private ProAdapter proAdapter;
     private DataBase dbHelper;
+    private MenuItem menuItem;
+    //
+    private SearchView searchView;
+    private androidx.appcompat.widget.Toolbar toolbar;
 
     /**
      * Método chamado para criar a interface do fragmento.
@@ -51,6 +61,14 @@ public class ListaProdutos extends Fragment implements ProAdapter.OnProActionLis
         // Carrega os produtos do banco de dados
         carregarProdutos();
 
+        // Configurar Toolbar
+        androidx.appcompat.widget.Toolbar toolbar = view.findViewById(R.id.toolbar2);
+        ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
+
+        // Configurar SearchView
+        searchView = view.findViewById(R.id.searchView);
+        setupSearchView();
+
         return view;
     }
 
@@ -61,15 +79,80 @@ public class ListaProdutos extends Fragment implements ProAdapter.OnProActionLis
         recyclerView = view.findViewById(R.id.listaProdutos); // Referência à RecyclerView no layout
         dbHelper = new DataBase(requireContext()); // Inicializa o helper do banco de dados
     }
+    //
+    private void setupSearchView() {
+        // Forçar layout LTR (Left-to-Right)
+        searchView.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
 
-    /**
+        // Acessar o EditText interno
+        EditText searchEditText = searchView.findViewById(androidx.appcompat.R.id.search_src_text);
+
+        // Configurar aparência do texto
+        searchEditText.setTextColor(ContextCompat.getColor(requireContext(), R.color.black));
+        searchEditText.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.cray1));
+
+        // Configurar margens dos ícones
+        ImageView searchIcon = searchView.findViewById(androidx.appcompat.R.id.search_button);
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) searchIcon.getLayoutParams();
+        params.setMarginEnd(16); // 16dp margin right
+        searchIcon.setLayoutParams(params);
+
+        // Configurar listener
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filtrarProdutos(newText);
+                return true;
+            }
+        });
+    }    //
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+    // Novo método para filtrar produtos
+    private void filtrarProdutos(String texto) {
+        new Thread(() -> {
+            try (SQLiteDatabase db = dbHelper.getReadableDatabase();
+                 Cursor cursor = db.rawQuery(
+                         "SELECT proId, proImg, proNome, proQtddeTotal, proPreco " +
+                                 "FROM produtos WHERE proNome LIKE ?",
+                         new String[]{"%" + texto + "%"})) {
+
+                List<ProModel> listaFiltrada = new ArrayList<>();
+                while (cursor.moveToNext()) {
+                    listaFiltrada.add(new ProModel(
+                            cursor.getInt(0),
+                            cursor.isNull(1) ? null : cursor.getBlob(1),
+                            cursor.getString(2),
+                            cursor.getInt(3),
+                            cursor.getDouble(4)
+                    ));
+                }
+
+                requireActivity().runOnUiThread(() -> {
+                    if (proAdapter != null) {
+                        proAdapter.atualizarLista(listaFiltrada);
+                    }
+                });
+
+            } catch (Exception e) {
+                requireActivity().runOnUiThread(() ->
+                        Toast.makeText(getContext(), "Erro na pesquisa", Toast.LENGTH_SHORT).show());
+            }
+        }).start();
+    }    /**
      * Define o layout da RecyclerView e otimizações.
      */
     private void configurarRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext())); // Exibe em lista vertical
         recyclerView.setHasFixedSize(true); // Otimização caso os itens tenham tamanho fixo
     }
-
     /**
      * Carrega os produtos do banco de dados em uma nova thread para evitar travamentos na interface.
      */
@@ -119,7 +202,6 @@ public class ListaProdutos extends Fragment implements ProAdapter.OnProActionLis
             }
         }).start();
     }
-
     /**
      * Método chamado quando o fragmento volta à tela (ex: após editar algo).
      * Força o recarregamento dos dados.
@@ -129,7 +211,6 @@ public class ListaProdutos extends Fragment implements ProAdapter.OnProActionLis
         super.onResume();
         carregarProdutos(); // Atualiza os dados sempre que o fragmento voltar a ficar visível
     }
-
     /**
      * Implementação da interface do adapter para reagir à exclusão de um produto.
      */
@@ -166,7 +247,6 @@ public class ListaProdutos extends Fragment implements ProAdapter.OnProActionLis
             }
         }).start();
     }
-
     /**
      * Implementação da interface do adapter para atualização de produto (se necessário).
      * Neste caso, apenas recarrega os dados.

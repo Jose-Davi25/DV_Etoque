@@ -34,6 +34,6 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        },2000); //2000 milesegundos que vai aparecer
+        },1500); //2000 milesegundos que vai aparecer
     }
 }
