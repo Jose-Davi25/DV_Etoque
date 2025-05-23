@@ -234,20 +234,20 @@
             android:padding="10dp"
             android:text="VER ESTOQUE"
             app:iconSize="18dp"
-            app:layout_constraintEnd_toStartOf="@+id/pesquisar"
+            app:layout_constraintEnd_toStartOf="@+id/btnSaidaEntrada"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
         <Button
-            android:id="@+id/pesquisar"
+            android:id="@+id/btnSaidaEntrada"
             android:layout_width="180dp"
             android:layout_height="140dp"
             android:layout_marginTop="55dp"
             android:background="@drawable/rounded_button"
             android:drawableTop="@drawable/ic_pesquisar"
             android:gravity="center"
-            android:padding="10dp"
-            android:text="PESQUISAR"
+            android:padding="14dp"
+            android:text="VER HISTORICO DE ENTRADAS E SAIDAS"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ver_estoque"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
@@ -279,7 +279,7 @@
             app:iconTint="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/adicionar_produto"
-            app:layout_constraintTop_toBottomOf="@+id/pesquisar" />
+            app:layout_constraintTop_toBottomOf="@+id/btnSaidaEntrada" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar2"

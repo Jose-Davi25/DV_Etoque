@@ -120,9 +120,12 @@ public class ListaProdutos extends Fragment implements ProAdapter.OnProActionLis
         new Thread(() -> {
             try (SQLiteDatabase db = dbHelper.getReadableDatabase();
                  Cursor cursor = db.rawQuery(
-                         "SELECT proId, proImg, proNome, proQtddeTotal, proPreco " +
-                                 "FROM produtos WHERE proNome LIKE ?",
-                         new String[]{"%" + texto + "%"})) {
+                         "SELECT p.proId, p.proImg, p.proNome, p.proQtddeTotal, p.proPreco, c.catNome " +
+                                 "FROM produtos p " +
+                                 "LEFT JOIN categorias c ON p.catId = c.catId " +  // Junção com categorias
+                                 "WHERE p.proNome LIKE ? OR c.catNome LIKE ?",      // Filtra por nome do produto OU categoria
+                         new String[]{"%" + texto + "%", "%" + texto + "%"} // Mesmo texto para ambos os campos
+                 )) {
 
                 List<ProModel> listaFiltrada = new ArrayList<>();
                 while (cursor.moveToNext()) {

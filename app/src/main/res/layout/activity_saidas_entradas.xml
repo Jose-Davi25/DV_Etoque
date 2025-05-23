@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Saidas_EntradasActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Título da tela -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:title="Saídas E Entradas Totais"
+            app:titleTextColor="@android:color/white"/>
+
+        <!-- Botão de limpar -->
+        <Button
+            android:id="@+id/btnLimpartudo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Limpar Tudo"
+            android:backgroundTint="#fff00000"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:layout_margin="8dp"/>
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            android:background="@android:color/white"
+            android:padding="4dp"
+            android:elevation="2dp">
+
+            <TableRow
+                android:background="#DDDDDD"
+                android:padding="8dp">
+
+                <TextView
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="Produto"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Qtdde Saidas"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Qtdde Entradas"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="Total S."
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+            </TableRow>
+        </TableLayout>
+
+        <!-- Lista de saídas -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerSaidasEntradas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingVertical="8dp"
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:ignore="SpeakableTextPresentCheck" />
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

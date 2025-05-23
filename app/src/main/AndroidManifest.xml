@@ -19,41 +19,37 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DV_Estoque"
         tools:targetApi="31">
-
+        <activity
+            android:name=".Saidas_EntradasActivity"
+            android:exported="false" />
         <activity
             android:name=".SplashActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".CadastroCategoriaActivity"
             android:exported="false" />
-
         <activity
             android:name=".CategoriaActivity"
             android:exported="false" />
-
         <activity
             android:name=".TabelaSaidaProdutos"
             android:exported="false" />
-
         <activity
             android:name=".Inicial"
             android:exported="false" />
-
         <activity
             android:name=".ListaProdutos"
             android:exported="false" />
-
         <activity
             android:name=".MainActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
     </application>
 
 </manifest>

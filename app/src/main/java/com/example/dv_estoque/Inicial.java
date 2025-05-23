@@ -38,7 +38,35 @@ public class Inicial extends Fragment {
                 startActivity(intent);
             }
         });
+        // Botão Saidas e Entradas
+        Button btnSaidaEntrada = view.findViewById(R.id.btnSaidaEntrada);
+        btnSaidaEntrada.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Saidas_EntradasActivity.class);
+                startActivity(intent);
+            }
+        });
+        // verificar esses error
 
+//        // Botão para ir para a tela de CadastrarProdutos
+//        Button btnIrCadastrarPro = view.findViewById(R.id.adicionar_produto);
+//        btnIrCadastrarPro.setOnClickListener(v -> {
+//            // Substitui o Fragment atual pelo CadastrarProdutos
+//            getParentFragmentManager().beginTransaction()
+//                    .replace(R.id.containerPrincipal, new CadastrarProdutos())
+//                    .addToBackStack(null) // adiciona à pilha para voltar com o botão "Back"
+//                    .commit();
+//        });
+//        // Botão para ir para a tela da ListaProdutos
+//        Button btnIrListarPro = view.findViewById(R.id.ver_estoque);
+//        btnIrListarPro.setOnClickListener(v -> {
+//            // Substitui o Fragment atual pelo ListaProdutos
+//            getParentFragmentManager().beginTransaction()
+//                    .replace(R.id.containerPrincipal, new ListaProdutos())
+//                    .addToBackStack(null)
+//                    .commit();
+//        });
 
 
         TextView tvProdutos = view.findViewById(R.id.tvProdutosCadastrados);
