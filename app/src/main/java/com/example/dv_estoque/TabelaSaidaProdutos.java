@@ -1,5 +1,6 @@
 package com.example.dv_estoque;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -112,18 +113,26 @@ public class TabelaSaidaProdutos extends Fragment {
     }
 
     // Limpa todo o histórico
+// Limpa todo o histórico
     private void limparTodasSaidas() {
-        Executors.newSingleThreadExecutor().execute(() -> {
-            boolean sucesso = dao.limparTodasSaidas();
+        new AlertDialog.Builder(requireContext())
+                .setTitle("Limpar Tudo")
+                .setMessage("Deseja apagar todas as saídas de hoje?")
+                .setPositiveButton("Sim", (d, w) -> {
+                    Executors.newSingleThreadExecutor().execute(() -> {
+                        boolean sucesso = dao.limparTodasSaidas(); // Método correto do DAO
 
-            requireActivity().runOnUiThread(() -> {
-                if (sucesso) {
-                    adapter.limparLista();
-                    mostrarToast("Histórico limpo");
-                    mostrarListaVazia();
-                }
-            });
-        });
+                        requireActivity().runOnUiThread(() -> {
+                            if (sucesso) {
+                                adapter.atualizarLista(new ArrayList<>());
+                                mostrarToast("Histórico limpo!"); // Corrigido o texto
+                            } else {
+                                mostrarToast("Erro ao limpar histórico!");
+                            }
+                        });
+                    });
+                })
+                .setNegativeButton("Não", null).show();
     }
 
     // Exibe mensagens temporárias

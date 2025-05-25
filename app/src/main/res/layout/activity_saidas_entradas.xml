@@ -15,7 +15,7 @@
 
         <!-- Título da tela -->
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbarES"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
@@ -24,7 +24,7 @@
 
         <!-- Botão de limpar -->
         <Button
-            android:id="@+id/btnLimpartudo"
+            android:id="@+id/btnLimpartudoES"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Limpar Tudo"
@@ -85,7 +85,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipToPadding="false"
-            android:paddingVertical="8dp"
             android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:ignore="SpeakableTextPresentCheck" />

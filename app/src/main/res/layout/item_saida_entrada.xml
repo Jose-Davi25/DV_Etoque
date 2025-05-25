@@ -2,13 +2,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="5dp"
-        android:background="@android:color/white">
+    android:orientation="horizontal"
+    android:padding="8dp">
 
         <TextView
             android:id="@+id/tv_nome_ES"
@@ -44,7 +39,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_total_saidas_ES"
+            android:id="@+id/tv_preco_total_saidas_ES"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
@@ -53,10 +48,5 @@
             android:textColor="#000000"
             android:textSize="14sp"
             android:textStyle="bold"/>
-    </TableRow>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#CCCCCC" />
 </LinearLayout>

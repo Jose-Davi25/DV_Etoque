@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.dv_estoque.Models.EntradaSaidaModel;
 import com.example.dv_estoque.Models.ProModel;
 
 import java.text.SimpleDateFormat;
@@ -55,6 +56,53 @@ public class ProdutoDAO {
         return false;
     }
 
+    // 📉 Registrar saída de produto e gravar na tabela de saidas e entradas
+    public boolean registrarSaidaProdut2(int produtoId, int quantidadeSaida) {
+        Cursor cursor = db.rawQuery("SELECT proNome, proPreco FROM produtos WHERE proId = ?",
+                new String[]{String.valueOf(produtoId)});
+
+        if (cursor.moveToFirst()) {
+            String nomeProduto = cursor.getString(0);
+            double precoUnitario = cursor.getDouble(1);
+
+            ContentValues valores = new ContentValues();
+            valores.put("ESNome", nomeProduto);
+            valores.put("ESQtddeSaida", quantidadeSaida);
+            valores.put("ESQtddeEntrada", 0); // Se não houver entradas
+            valores.put("ESPrecoSaida", quantidadeSaida * precoUnitario);
+
+            long resultado = db.insert("entradasEsaidas", null, valores);
+            cursor.close();
+
+            return resultado != -1;
+        }
+        cursor.close();
+        return false;
+    }
+    // Adicione esses métodos na classe ProdutoDAO
+    @SuppressLint("Range")
+    public List<EntradaSaidaModel> obterTodasEntradasSaidas() {
+        List<EntradaSaidaModel> lista = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM entradasEsaidas", null);
+        while (cursor.moveToNext()) {
+            EntradaSaidaModel item = new EntradaSaidaModel(
+                    cursor.getInt(cursor.getColumnIndex("ESbId")),
+                    cursor.getString(cursor.getColumnIndex("ESNome")),
+                    cursor.getInt(cursor.getColumnIndex("ESQtddeEntrada")), // Corrigido
+                    cursor.getInt(cursor.getColumnIndex("ESQtddeSaida")),    // Corrigido
+                    cursor.getDouble(cursor.getColumnIndex("ESPrecoSaida"))
+            );
+            lista.add(item);
+        }
+        cursor.close();
+        return lista;
+    }
+
+    public boolean limparTodasEntradasSaidas() {
+        int linhasAfetadas = db.delete("entradasEsaidas", null, null);
+        return linhasAfetadas > 0;
+    }
     // ✅ Registrar saída lógica no banco
     public boolean registrarSaidaLogica(String proNome, int quantidadeVendida, double precoUnitario, String dataSaida) {
         double precoTotal = precoUnitario * quantidadeVendida;

@@ -180,22 +180,26 @@ public class ProAdapter extends RecyclerView.Adapter<ProAdapter.ViewHolder> {
                     try {
                         int qtdSaida = Integer.parseInt(txtQtdSaida.getText().toString());
                         if (qtdSaida > 0 && qtdSaida <= proModel.getProQuantidade()) {
-                            // Chama o DAO para registrar a saída
                             ProdutoDAO dao = new ProdutoDAO(context);
-                            boolean sucesso = dao.registrarSaidaProduto(proModel.getProId(), qtdSaida);
 
-                            if (sucesso) {
-                                // Atualiza a quantidade do produto no adapter
+                            // Chamar AMBAS as funções
+                            boolean sucessoSaidaLogica = dao.registrarSaidaProduto(proModel.getProId(), qtdSaida);
+                            boolean sucessoEntradasSaidas = dao.registrarSaidaProdut2(proModel.getProId(), qtdSaida);
+
+                            if (sucessoSaidaLogica && sucessoEntradasSaidas) {
+                                // Atualiza a quantidade do produto
                                 proModel.setProQuantidade(proModel.getProQuantidade() - qtdSaida);
                                 proQuantidade.setText(String.valueOf(proModel.getProQuantidade()));
+
+                                // Resetar campos
                                 txtQtdSaida.setText("0");
                                 precoSumProduto.setText("R$ 0.00");
 
-                                Toast.makeText(context, "Saída registrada: " + qtdSaida + " unidade(s)", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Saída registrada!", Toast.LENGTH_SHORT).show();
                                 notifyItemChanged(getAdapterPosition());
 
                                 if (listener != null) {
-                                    listener.onProUpdate(); // Notifica que houve alteração
+                                    listener.onProUpdate();
                                 }
                             } else {
                                 Toast.makeText(context, "Erro ao registrar saída!", Toast.LENGTH_SHORT).show();
@@ -208,7 +212,6 @@ public class ProAdapter extends RecyclerView.Adapter<ProAdapter.ViewHolder> {
                     }
                 });
             }
-
             // Abre menu de contexto ao pressionar item
             itemView.setOnLongClickListener(v -> {
                 showContextMenu(v, proModel);
