@@ -35,14 +35,14 @@ public class DataBase extends SQLiteOpenHelper {
                         "proPreco REAL NOT NULL DEFAULT 0," +
                         "FOREIGN KEY(catId) REFERENCES categorias(catId) ON DELETE SET NULL ON UPDATE CASCADE)");
 
-        // Criação da tabela para controle de saídas e entradas de estoque, se necessário
+        // Criação da tabela para controle de saídas totais de estoque
         db.execSQL(
-                "CREATE TABLE IF NOT EXISTS entradasEsaidas (" +
-                        "ESbId INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "ESNome TEXT," +
-                        "ESQtddeEntrada INTEGER," +
-                        "ESQtddeSaida INTEGER," +
-                        "ESPrecoSaida REAL)");
+                "CREATE TABLE saidasTotais (" +
+                        "SaiId INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "proId INTEGER, " +
+                        "SNome TEXT, " +
+                        "SQtddeSaidaTotal INTEGER DEFAULT 0, " +
+                        "SPrecoTotalSaida REAL DEFAULT 0)");
 
         // Criação da tabela de saída lógica
         db.execSQL(

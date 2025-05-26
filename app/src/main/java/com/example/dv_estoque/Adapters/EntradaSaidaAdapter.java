@@ -34,9 +34,8 @@ public class EntradaSaidaAdapter extends RecyclerView.Adapter<EntradaSaidaAdapte
         EntradaSaidaModel item = modelArrayList.get(position);
 
         holder.ESNome.setText(item.getESNome());
-        holder.ESQtddeSaida.setText(String.valueOf(item.getESQtddeSaida()));
-        holder.ESQtddeEntrada.setText(String.valueOf(item.getESQtddeEntrada())); // Corrigido
-        holder.ESPrecoSaida.setText(String.format("R$ %.2f", item.getESPrecoSaida()));
+        holder.ESQtddeSaidaTotal.setText(String.valueOf(item.getESQtddeSaidaTotal())); // Novo campo
+        holder.ESPrecoTotalSaida.setText(String.format("R$ %.2f", item.getESPrecoTotalSaida()));
     }
 
     @Override
@@ -45,14 +44,18 @@ public class EntradaSaidaAdapter extends RecyclerView.Adapter<EntradaSaidaAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView ESNome, ESQtddeEntrada, ESQtddeSaida, ESPrecoSaida;
+        TextView ESNome, ESQtddeSaidaTotal, ESPrecoTotalSaida; // Remova entrada
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ESNome = itemView.findViewById(R.id.tv_nome_ES);
-            ESQtddeEntrada = itemView.findViewById(R.id.tv_qtdde_entradas_ES);
-            ESQtddeSaida = itemView.findViewById(R.id.tv_qtdde_saidas_ES);
-            ESPrecoSaida = itemView.findViewById(R.id.tv_preco_total_saidas_ES);
+            ESQtddeSaidaTotal = itemView.findViewById(R.id.tv_qtdde_saidas_total); // Novo ID no layout
+            ESPrecoTotalSaida = itemView.findViewById(R.id.tv_preco_total_saidas_ES);
         }
+    }
+
+    public void atualizarLista(List<EntradaSaidaModel> novaLista) {
+        this.modelArrayList = novaLista;
+        notifyDataSetChanged();
     }
 }

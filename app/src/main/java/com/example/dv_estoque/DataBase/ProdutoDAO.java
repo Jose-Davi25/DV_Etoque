@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 import com.example.dv_estoque.Models.EntradaSaidaModel;
 import com.example.dv_estoque.Models.ProModel;
@@ -56,53 +58,6 @@ public class ProdutoDAO {
         return false;
     }
 
-    // 📉 Registrar saída de produto e gravar na tabela de saidas e entradas
-    public boolean registrarSaidaProdut2(int produtoId, int quantidadeSaida) {
-        Cursor cursor = db.rawQuery("SELECT proNome, proPreco FROM produtos WHERE proId = ?",
-                new String[]{String.valueOf(produtoId)});
-
-        if (cursor.moveToFirst()) {
-            String nomeProduto = cursor.getString(0);
-            double precoUnitario = cursor.getDouble(1);
-
-            ContentValues valores = new ContentValues();
-            valores.put("ESNome", nomeProduto);
-            valores.put("ESQtddeSaida", quantidadeSaida);
-            valores.put("ESQtddeEntrada", 0); // Se não houver entradas
-            valores.put("ESPrecoSaida", quantidadeSaida * precoUnitario);
-
-            long resultado = db.insert("entradasEsaidas", null, valores);
-            cursor.close();
-
-            return resultado != -1;
-        }
-        cursor.close();
-        return false;
-    }
-    // Adicione esses métodos na classe ProdutoDAO
-    @SuppressLint("Range")
-    public List<EntradaSaidaModel> obterTodasEntradasSaidas() {
-        List<EntradaSaidaModel> lista = new ArrayList<>();
-
-        Cursor cursor = db.rawQuery("SELECT * FROM entradasEsaidas", null);
-        while (cursor.moveToNext()) {
-            EntradaSaidaModel item = new EntradaSaidaModel(
-                    cursor.getInt(cursor.getColumnIndex("ESbId")),
-                    cursor.getString(cursor.getColumnIndex("ESNome")),
-                    cursor.getInt(cursor.getColumnIndex("ESQtddeEntrada")), // Corrigido
-                    cursor.getInt(cursor.getColumnIndex("ESQtddeSaida")),    // Corrigido
-                    cursor.getDouble(cursor.getColumnIndex("ESPrecoSaida"))
-            );
-            lista.add(item);
-        }
-        cursor.close();
-        return lista;
-    }
-
-    public boolean limparTodasEntradasSaidas() {
-        int linhasAfetadas = db.delete("entradasEsaidas", null, null);
-        return linhasAfetadas > 0;
-    }
     // ✅ Registrar saída lógica no banco
     public boolean registrarSaidaLogica(String proNome, int quantidadeVendida, double precoUnitario, String dataSaida) {
         double precoTotal = precoUnitario * quantidadeVendida;
@@ -136,6 +91,69 @@ public class ProdutoDAO {
         cursor.close();
         return lista;
     }
+    /// /////////////////////////////////////////////////////////////
+    // Método para acumular saídas
+    public boolean acumularSaidaTotal(int proId, int quantidadeSaida, double precoTotal) {
+        try {
+            ContentValues values = new ContentValues();
+            String sql = "UPDATE saidasTotais SET " +
+                    "SQtddeSaidaTotal = SQtddeSaidaTotal + ?, " +
+                    "SPrecoTotalSaida = SPrecoTotalSaida + ? " +
+                    "WHERE proId = ?";
+
+            SQLiteStatement stmt = db.compileStatement(sql);
+            stmt.bindLong(1, quantidadeSaida);
+            stmt.bindDouble(2, precoTotal);
+            stmt.bindLong(3, proId);
+
+            int rowsAffected = stmt.executeUpdateDelete();
+
+            if (rowsAffected == 0) {
+                ContentValues newValues = new ContentValues();
+                newValues.put("proId", proId);
+                newValues.put("SQtddeSaidaTotal", quantidadeSaida);
+                newValues.put("SPrecoTotalSaida", precoTotal);
+
+                Cursor cursor = db.rawQuery("SELECT proNome FROM produtos WHERE proId=?",
+                        new String[]{String.valueOf(proId)});
+                if (cursor.moveToFirst()) {
+                    newValues.put("SNome", cursor.getString(0));
+                }
+                cursor.close();
+
+                return db.insert("saidasTotais", null, newValues) != -1;
+            }
+            return true;
+        } catch (Exception e) {
+            Log.e("DAO", "Erro ao acumular saída", e);
+            return false;
+        }
+    }
+    // Obter dados ajustado
+    @SuppressLint("Range")
+    public List<EntradaSaidaModel> obterTodasSaidasAcumuladas() {
+        List<EntradaSaidaModel> lista = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM saidasTotais", null);
+        while (cursor.moveToNext()) {
+            EntradaSaidaModel item = new EntradaSaidaModel(
+                    cursor.getInt(cursor.getColumnIndex("SaiId")),
+                    cursor.getInt(cursor.getColumnIndex("proId")),
+                    cursor.getString(cursor.getColumnIndex("SNome")),
+                    cursor.getInt(cursor.getColumnIndex("SQtddeSaidaTotal")), // Coluna nova
+                    cursor.getDouble(cursor.getColumnIndex("SPrecoTotalSaida"))
+            );
+            lista.add(item);
+        }
+        cursor.close();
+        return lista;
+    }
+    /// LIMPA TUDO
+    public boolean limparTodasSaidasTotais() {
+        int linhasAfetadas = db.delete("saidasTotais", null, null);
+        return linhasAfetadas > 0;
+    }
+    /// ///////////////////////////////////////////////////////
 
     // Buscar produto por ID
     public Cursor buscarProdutoPorId(int produtoId) {

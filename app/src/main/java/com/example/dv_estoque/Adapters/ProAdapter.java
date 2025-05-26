@@ -175,43 +175,43 @@ public class ProAdapter extends RecyclerView.Adapter<ProAdapter.ViewHolder> {
             }
 
             // Botão para registrar a saída
-            if (btnSaida != null) {
-                btnSaida.setOnClickListener(v -> {
-                    try {
-                        int qtdSaida = Integer.parseInt(txtQtdSaida.getText().toString());
-                        if (qtdSaida > 0 && qtdSaida <= proModel.getProQuantidade()) {
-                            ProdutoDAO dao = new ProdutoDAO(context);
+            // Dentro do clique do botão de saída (ProAdapter.java)
+            btnSaida.setOnClickListener(v -> {
+                try {
+                    int qtdSaida = Integer.parseInt(txtQtdSaida.getText().toString());
+                    if (qtdSaida > 0 && qtdSaida <= proModel.getProQuantidade()) {
+                        ProdutoDAO dao = new ProdutoDAO(context);
 
-                            // Chamar AMBAS as funções
-                            boolean sucessoSaidaLogica = dao.registrarSaidaProduto(proModel.getProId(), qtdSaida);
-                            boolean sucessoEntradasSaidas = dao.registrarSaidaProdut2(proModel.getProId(), qtdSaida);
+                        // 1. Registrar na tabela de saídas detalhadas
+                        boolean sucessoSaidaLogica = dao.registrarSaidaProduto(proModel.getProId(), qtdSaida);
 
-                            if (sucessoSaidaLogica && sucessoEntradasSaidas) {
-                                // Atualiza a quantidade do produto
-                                proModel.setProQuantidade(proModel.getProQuantidade() - qtdSaida);
-                                proQuantidade.setText(String.valueOf(proModel.getProQuantidade()));
+                        // 2. Atualizar a tabela consolidada de entradas/saídas
+                        boolean sucessoAtualizacao = dao.acumularSaidaTotal(
+                                proModel.getProId(),
+                                qtdSaida,
+                                qtdSaida * proModel.getProPreco()
+                        );
 
-                                // Resetar campos
-                                txtQtdSaida.setText("0");
-                                precoSumProduto.setText("R$ 0.00");
+                        if (sucessoSaidaLogica && sucessoAtualizacao) {
+                            // Atualiza a UI e estoque
+                            proModel.setProQuantidade(proModel.getProQuantidade() - qtdSaida);
+                            proQuantidade.setText(String.valueOf(proModel.getProQuantidade()));
+                            txtQtdSaida.setText("0");
+                            precoSumProduto.setText("R$ 0.00");
 
-                                Toast.makeText(context, "Saída registrada!", Toast.LENGTH_SHORT).show();
-                                notifyItemChanged(getAdapterPosition());
+                            Toast.makeText(context, "Saída de " + qtdSaida + " unidade(s) registrada!", Toast.LENGTH_SHORT).show();
+                            notifyItemChanged(getAdapterPosition());
 
-                                if (listener != null) {
-                                    listener.onProUpdate();
-                                }
-                            } else {
-                                Toast.makeText(context, "Erro ao registrar saída!", Toast.LENGTH_SHORT).show();
-                            }
+                            if (listener != null) listener.onProUpdate();
                         } else {
-                            Toast.makeText(context, "Quantidade inválida!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Erro parcial ao registrar saída", Toast.LENGTH_SHORT).show();
                         }
-                    } catch (Exception e) {
-                        Log.e("ProAdapter", "Erro ao registrar saída", e);
                     }
-                });
-            }
+                } catch (Exception e) {
+                    Log.e("ProAdapter", "Erro ao registrar saída", e);
+                }
+            });
+
             // Abre menu de contexto ao pressionar item
             itemView.setOnLongClickListener(v -> {
                 showContextMenu(v, proModel);

@@ -46,40 +46,38 @@ public class Saidas_EntradasActivity extends AppCompatActivity {
             return insets;});
 
         produtoDAO = new ProdutoDAO(this);
-
         recyclerSaidasEntradas = findViewById(R.id.recyclerSaidasEntradas);
-        recyclerSaidasEntradas.setLayoutManager(new LinearLayoutManager(this));
+        recyclerSaidasEntradas.setLayoutManager(new LinearLayoutManager(this)); // Adicione esta linha
 
-        limparTudoES = findViewById(R.id.btnLimpartudoES);
-        limparTudoES.setOnClickListener(v -> limpartudo());
+        // Inicialize o adapter ANTES de carregar os dados
+        entradaSaidaAdapter = new EntradaSaidaAdapter(this, new ArrayList<>());
+        recyclerSaidasEntradas.setAdapter(entradaSaidaAdapter);
+
+        limparTudoES = findViewById(R.id.btnLimparSaidasTotais);
+        limparTudoES.setOnClickListener(v -> limpartudo()); // Adicione esta linha
 
         carregarDados();
     }
 
     private void carregarDados() {
-        List<EntradaSaidaModel> lista = produtoDAO.obterTodasEntradasSaidas();
-
-        // Verifique os dados no Logcat
-        Log.d("DEBUG_ENTRADAS_SAIDAS", "Total de registros: " + lista.size());
-        for (EntradaSaidaModel item : lista) {
-            Log.d("DEBUG_ENTRADAS_SAIDAS",
-                    "Item: " + item.getESNome() + " | Saídas: " + item.getESQtddeSaida());
-        }
-
-        entradaSaidaAdapter = new EntradaSaidaAdapter(this, lista);
-        recyclerSaidasEntradas.setAdapter(entradaSaidaAdapter);
+        List<EntradaSaidaModel> lista = produtoDAO.obterTodasSaidasAcumuladas(); // Método alterado
+        entradaSaidaAdapter.atualizarLista(lista);
     }
+
     private void limpartudo() {
         new AlertDialog.Builder(this)
-                .setTitle("Limpar Hitorico")
-                .setMessage("Deseja Apagar todas as entradas e saidas ?")
+                .setTitle("Limpar Histórico")
+                .setMessage("Deseja apagar todas as entradas e saídas?")
                 .setPositiveButton("Sim", (d, w) -> {
-                    if (produtoDAO.limparTodasEntradasSaidas()) {
+                    if (produtoDAO.limparTodasSaidasTotais()) {
                         carregarDados();
-                        Toast.makeText(this, "Hitorico limpo!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Histórico limpo!", Toast.LENGTH_SHORT).show();
                     }
-                }).setNegativeButton("Não", null).show();
+                })
+                .setNegativeButton("Não", null)
+                .show();
     }
+
     //
     @Override
     protected void onDestroy(){

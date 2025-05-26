@@ -13,29 +13,18 @@
             android:text="nome"
             android:gravity="center"
             android:textColor="#000000"
-            android:textSize="14sp"
-            android:textStyle="normal" />
-
-        <TextView
-            android:id="@+id/tv_qtdde_saidas_ES"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:text="0000"
-            android:gravity="center"
-            android:textColor="#000000"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_qtdde_entradas_ES"
+            android:id="@+id/tv_qtdde_saidas_total"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:text="0000"
             android:gravity="center"
             android:textColor="#000000"
-            android:textSize="14sp"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
@@ -46,7 +35,7 @@
             android:text="00,00"
             android:gravity="center"
             android:textColor="#000000"
-            android:textSize="14sp"
+            android:textSize="20sp"
             android:textStyle="bold"/>
 
 </LinearLayout>

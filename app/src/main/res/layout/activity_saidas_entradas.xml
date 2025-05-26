@@ -24,7 +24,7 @@
 
         <!-- Botão de limpar -->
         <Button
-            android:id="@+id/btnLimpartudoES"
+            android:id="@+id/btnLimparSaidasTotais"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Limpar Tudo"
@@ -51,7 +51,7 @@
                     android:text="Produto"
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold"
-                    android:textSize="16sp" />
+                    android:textSize="20sp" />
 
                 <TextView
                     android:layout_weight="1"
@@ -59,23 +59,17 @@
                     android:text="Qtdde Saidas"
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold"
-                    android:textSize="16sp" />
+                    android:textSize="20sp" />
 
-                <TextView
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="Qtdde Entradas"
-                    android:textColor="@color/colorPrimary"
-                    android:textStyle="bold"
-                    android:textSize="16sp" />
+
 
                 <TextView
                     android:layout_weight="2"
                     android:gravity="center"
-                    android:text="Total S."
+                    android:text="Preco Total S."
                     android:textColor="@color/colorPrimary"
                     android:textStyle="bold"
-                    android:textSize="16sp" />
+                    android:textSize="20sp" />
             </TableRow>
         </TableLayout>
 

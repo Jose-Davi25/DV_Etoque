@@ -1,19 +1,19 @@
 package com.example.dv_estoque.Models;
 
 public class EntradaSaidaModel {
-    // vaeiaveis
     private int ESbId;
+    private int ESproId;
     private String ESNome;
-    private int ESQtddeEntrada;
-    private int ESQtddeSaida;
-    private Double ESPrecoSaida;
+    private int ESQtddeSaidaTotal;
+    private Double ESPrecoTotalSaida;
 
-    public EntradaSaidaModel(int ESbId, String ESNome, int ESQtddeEntrada, int ESQtddeSaida, Double ESPrecoSaida) {
+    public EntradaSaidaModel(int ESbId, int ESproId, String ESNome,
+                             int ESQtddeSaidaTotal, Double ESPrecoTotalSaida) {
         this.ESbId = ESbId;
+        this.ESproId = ESproId;
         this.ESNome = ESNome;
-        this.ESQtddeEntrada = ESQtddeEntrada;
-        this.ESQtddeSaida = ESQtddeSaida;
-        this.ESPrecoSaida = ESPrecoSaida;
+        this.ESQtddeSaidaTotal = ESQtddeSaidaTotal;
+        this.ESPrecoTotalSaida = ESPrecoTotalSaida;
     }
 
     public int getESbId() {
@@ -24,6 +24,14 @@ public class EntradaSaidaModel {
         this.ESbId = ESbId;
     }
 
+    public int getESproId() {
+        return ESproId;
+    }
+
+    public void setESproId(int ESproId) {
+        this.ESproId = ESproId;
+    }
+
     public String getESNome() {
         return ESNome;
     }
@@ -32,27 +40,19 @@ public class EntradaSaidaModel {
         this.ESNome = ESNome;
     }
 
-    public int getESQtddeEntrada() {
-        return ESQtddeEntrada;
+    public int getESQtddeSaidaTotal() {
+        return ESQtddeSaidaTotal;
     }
 
-    public void setESQtddeEntrada(int ESQtddeEntrada) {
-        this.ESQtddeEntrada = ESQtddeEntrada;
+    public void setESQtddeSaidaTotal(int ESQtddeSaidaTotal) {
+        this.ESQtddeSaidaTotal = ESQtddeSaidaTotal;
     }
 
-    public int getESQtddeSaida() {
-        return ESQtddeSaida;
+    public Double getESPrecoTotalSaida() {
+        return ESPrecoTotalSaida;
     }
 
-    public void setESQtddeSaida(int ESQtddeSaida) {
-        this.ESQtddeSaida = ESQtddeSaida;
-    }
-
-    public Double getESPrecoSaida() {
-        return ESPrecoSaida;
-    }
-
-    public void setESPrecoSaida(Double ESPrecoSaida) {
-        this.ESPrecoSaida = ESPrecoSaida;
+    public void setESPrecoTotalSaida(Double ESPrecoTotalSaida) {
+        this.ESPrecoTotalSaida = ESPrecoTotalSaida;
     }
 }

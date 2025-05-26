@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dv_estoque.DataBase.DataBase;
+import com.example.dv_estoque.DataBase.ProdutoDAO;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class CadastrarProdutos extends Fragment {
     private Button btnSalvar, btnAtualizar, btnGaleria;
     private Spinner spinnerCategoria;
     private DataBase db;
+    private ProdutoDAO dao;
 
     private static final int PICK_IMAGE = 100;
 
@@ -66,6 +68,8 @@ public class CadastrarProdutos extends Fragment {
         spinnerCategoria = view.findViewById(R.id.proCadCategoria);
 
         db = new DataBase(requireContext());
+        dao = new ProdutoDAO(requireContext());
+
 
         // Configura o campo de preço para aceitar vírgulas
         configurarCampoPreco();
@@ -254,16 +258,21 @@ public class CadastrarProdutos extends Fragment {
             // Inserção no banco de dados
             long resultado = escrita.insert("produtos", null, valores);
             escrita.close();
+            int novoProId = (int) resultado; // O próprio insert retorna o ID
 
             if (resultado != -1) {
                 Toast.makeText(getContext(), "Produto cadastrado com sucesso", Toast.LENGTH_SHORT).show();
                 limparCampos();
 
-                // Atualiza a lista de produtos se estiver em uma MainActivity
+                // Fechar a conexão após todas as operações
+                escrita.close();
+
+                // Atualizar lista
                 if (getActivity() instanceof MainActivity) {
                     ((MainActivity) getActivity()).recarregarListaProdutos();
                 }
             } else {
+                escrita.close();
                 Toast.makeText(getContext(), "Falha ao cadastrar produto", Toast.LENGTH_SHORT).show();
             }
 
