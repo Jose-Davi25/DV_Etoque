@@ -20,7 +20,7 @@
         android:theme="@style/Theme.DV_Estoque"
         tools:targetApi="31">
         <activity
-            android:name=".Saidas_EntradasActivity"
+            android:name=".SaidaTotalActivity"
             android:exported="false" />
         <activity
             android:name=".SplashActivity"

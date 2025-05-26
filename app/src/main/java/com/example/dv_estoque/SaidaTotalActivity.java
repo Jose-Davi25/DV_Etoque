@@ -1,13 +1,8 @@
 package com.example.dv_estoque;
 
 import android.app.AlertDialog;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -18,19 +13,17 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.dv_estoque.Adapters.EntradaSaidaAdapter;
-import com.example.dv_estoque.Adapters.ProAdapter;
-import com.example.dv_estoque.DataBase.DataBase;
+import com.example.dv_estoque.Adapters.SaidaTotalAdapter;
 import com.example.dv_estoque.DataBase.ProdutoDAO;
-import com.example.dv_estoque.Models.EntradaSaidaModel;
+import com.example.dv_estoque.Models.SaidaTotalModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Saidas_EntradasActivity extends AppCompatActivity {
+public class SaidaTotalActivity extends AppCompatActivity {
 
     private RecyclerView recyclerSaidasEntradas;
-    private EntradaSaidaAdapter entradaSaidaAdapter;
+    private SaidaTotalAdapter entradaSaidaAdapter;
     private ProdutoDAO produtoDAO;
     private Button limparTudoES;
 
@@ -38,7 +31,7 @@ public class Saidas_EntradasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_saidas_entradas);
+        setContentView(R.layout.activity_saida_total);
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -50,7 +43,7 @@ public class Saidas_EntradasActivity extends AppCompatActivity {
         recyclerSaidasEntradas.setLayoutManager(new LinearLayoutManager(this)); // Adicione esta linha
 
         // Inicialize o adapter ANTES de carregar os dados
-        entradaSaidaAdapter = new EntradaSaidaAdapter(this, new ArrayList<>());
+        entradaSaidaAdapter = new SaidaTotalAdapter(this, new ArrayList<>());
         recyclerSaidasEntradas.setAdapter(entradaSaidaAdapter);
 
         limparTudoES = findViewById(R.id.btnLimparSaidasTotais);
@@ -60,7 +53,7 @@ public class Saidas_EntradasActivity extends AppCompatActivity {
     }
 
     private void carregarDados() {
-        List<EntradaSaidaModel> lista = produtoDAO.obterTodasSaidasAcumuladas(); // Método alterado
+        List<SaidaTotalModel> lista = produtoDAO.obterTodasSaidasAcumuladas(); // Método alterado
         entradaSaidaAdapter.atualizarLista(lista);
     }
 

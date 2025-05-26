@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
-import com.example.dv_estoque.Models.EntradaSaidaModel;
+import com.example.dv_estoque.Models.SaidaTotalModel;
 import com.example.dv_estoque.Models.ProModel;
 
 import java.text.SimpleDateFormat;
@@ -131,12 +131,12 @@ public class ProdutoDAO {
     }
     // Obter dados ajustado
     @SuppressLint("Range")
-    public List<EntradaSaidaModel> obterTodasSaidasAcumuladas() {
-        List<EntradaSaidaModel> lista = new ArrayList<>();
+    public List<SaidaTotalModel> obterTodasSaidasAcumuladas() {
+        List<SaidaTotalModel> lista = new ArrayList<>();
 
         Cursor cursor = db.rawQuery("SELECT * FROM saidasTotais", null);
         while (cursor.moveToNext()) {
-            EntradaSaidaModel item = new EntradaSaidaModel(
+            SaidaTotalModel item = new SaidaTotalModel(
                     cursor.getInt(cursor.getColumnIndex("SaiId")),
                     cursor.getInt(cursor.getColumnIndex("proId")),
                     cursor.getString(cursor.getColumnIndex("SNome")),

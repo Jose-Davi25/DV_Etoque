@@ -43,7 +43,7 @@ public class Inicial extends Fragment {
         btnSaidaEntrada.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), Saidas_EntradasActivity.class);
+                Intent intent = new Intent(getActivity(), SaidaTotalActivity.class);
                 startActivity(intent);
             }
         });

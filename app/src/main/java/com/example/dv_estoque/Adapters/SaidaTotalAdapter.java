@@ -7,16 +7,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.dv_estoque.Models.EntradaSaidaModel;
+import com.example.dv_estoque.Models.SaidaTotalModel;
 import com.example.dv_estoque.R;
 import java.util.List;
 
-public class EntradaSaidaAdapter extends RecyclerView.Adapter<EntradaSaidaAdapter.ViewHolder> {
+public class SaidaTotalAdapter extends RecyclerView.Adapter<SaidaTotalAdapter.ViewHolder> {
 
     private final Context context;
-    private List<EntradaSaidaModel> modelArrayList;
+    private List<SaidaTotalModel> modelArrayList;
 
-    public EntradaSaidaAdapter(Context context, List<EntradaSaidaModel> modelArrayList) {
+    public SaidaTotalAdapter(Context context, List<SaidaTotalModel> modelArrayList) {
         this.context = context;
         this.modelArrayList = modelArrayList;
     }
@@ -31,7 +31,7 @@ public class EntradaSaidaAdapter extends RecyclerView.Adapter<EntradaSaidaAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        EntradaSaidaModel item = modelArrayList.get(position);
+        SaidaTotalModel item = modelArrayList.get(position);
 
         holder.ESNome.setText(item.getESNome());
         holder.ESQtddeSaidaTotal.setText(String.valueOf(item.getESQtddeSaidaTotal())); // Novo campo
@@ -54,7 +54,7 @@ public class EntradaSaidaAdapter extends RecyclerView.Adapter<EntradaSaidaAdapte
         }
     }
 
-    public void atualizarLista(List<EntradaSaidaModel> novaLista) {
+    public void atualizarLista(List<SaidaTotalModel> novaLista) {
         this.modelArrayList = novaLista;
         notifyDataSetChanged();
     }

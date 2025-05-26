@@ -6,7 +6,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Saidas_EntradasActivity">
+    tools:context=".SaidaTotalActivity"
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
-            app:title="Saídas E Entradas Totais"
+            app:title="Historico de Saídas Acumuladas"
             app:titleTextColor="@android:color/white"/>
 
         <!-- Botão de limpar -->

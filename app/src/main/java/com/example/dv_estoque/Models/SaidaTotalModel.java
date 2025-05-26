@@ -1,14 +1,14 @@
 package com.example.dv_estoque.Models;
 
-public class EntradaSaidaModel {
+public class SaidaTotalModel {
     private int ESbId;
     private int ESproId;
     private String ESNome;
     private int ESQtddeSaidaTotal;
     private Double ESPrecoTotalSaida;
 
-    public EntradaSaidaModel(int ESbId, int ESproId, String ESNome,
-                             int ESQtddeSaidaTotal, Double ESPrecoTotalSaida) {
+    public SaidaTotalModel(int ESbId, int ESproId, String ESNome,
+                           int ESQtddeSaidaTotal, Double ESPrecoTotalSaida) {
         this.ESbId = ESbId;
         this.ESproId = ESproId;
         this.ESNome = ESNome;
