@@ -3,6 +3,7 @@ package com.example.dv_estoque;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -26,6 +27,7 @@ public class SaidaTotalActivity extends AppCompatActivity {
     private SaidaTotalAdapter entradaSaidaAdapter;
     private ProdutoDAO produtoDAO;
     private Button limparTudoES;
+    private TextView orderName, orderQtd, orderPrice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,30 @@ public class SaidaTotalActivity extends AppCompatActivity {
         limparTudoES = findViewById(R.id.btnLimparSaidasTotais);
         limparTudoES.setOnClickListener(v -> limpartudo()); // Adicione esta linha
 
+        // BOTÕES DE ORDENAÇÃO
+        orderName = findViewById(R.id.listNome);
+        orderQtd = findViewById(R.id.listQtdTotal);
+        orderPrice = findViewById(R.id.listPriceTotal);
+
+        orderName.setOnClickListener( v -> ordenarPorNome());
+        orderQtd.setOnClickListener( v -> ordenarPorQtd());
+        orderPrice.setOnClickListener( v -> ordenarPorPreco());
+
         carregarDados();
+    }
+    private void ordenarPorNome() {
+        List<SaidaTotalModel> lista2 = produtoDAO.obterTodasSaidasAcumuladas2(); // Método alterado
+        entradaSaidaAdapter.atualizarLista(lista2);
+    }
+
+    private void ordenarPorQtd() {
+        List<SaidaTotalModel> lista = produtoDAO.obterTodasSaidasAcumuladas(); // Método alterado
+        entradaSaidaAdapter.atualizarLista(lista);
+    }
+
+    private void ordenarPorPreco() {
+        List<SaidaTotalModel> lista3 = produtoDAO.obterTodasSaidasAcumuladas3(); // Método alterado
+        entradaSaidaAdapter.atualizarLista(lista3);
     }
 
     private void carregarDados() {

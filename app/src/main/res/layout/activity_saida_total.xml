@@ -47,6 +47,7 @@
                 android:padding="8dp">
 
                 <TextView
+                    android:id="@+id/listNome"
                     android:layout_weight="2"
                     android:gravity="center"
                     android:text="Produto"
@@ -55,6 +56,7 @@
                     android:textSize="20sp" />
 
                 <TextView
+                    android:id="@+id/listQtdTotal"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="Qtdde Saidas"
@@ -65,6 +67,7 @@
 
 
                 <TextView
+                    android:id="@+id/listPriceTotal"
                     android:layout_weight="2"
                     android:gravity="center"
                     android:text="Preco Total S."

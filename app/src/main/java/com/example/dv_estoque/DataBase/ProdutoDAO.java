@@ -134,7 +134,7 @@ public class ProdutoDAO {
     public List<SaidaTotalModel> obterTodasSaidasAcumuladas() {
         List<SaidaTotalModel> lista = new ArrayList<>();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM saidasTotais", null);
+        Cursor cursor = db.rawQuery("SELECT SaiId, proId, SNome, SQtddeSaidaTotal, SPrecoTotalSaida FROM saidasTotais ORDER BY 4 DESC", null);
         while (cursor.moveToNext()) {
             SaidaTotalModel item = new SaidaTotalModel(
                     cursor.getInt(cursor.getColumnIndex("SaiId")),
@@ -147,6 +147,39 @@ public class ProdutoDAO {
         }
         cursor.close();
         return lista;
+    }public List<SaidaTotalModel> obterTodasSaidasAcumuladas2() {
+        List<SaidaTotalModel> lista2 = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("SELECT SaiId, proId, SNome, SQtddeSaidaTotal, SPrecoTotalSaida FROM saidasTotais ORDER BY 3", null);
+        while (cursor.moveToNext()) {
+            @SuppressLint("Range") SaidaTotalModel item = new SaidaTotalModel(
+                    cursor.getInt(cursor.getColumnIndex("SaiId")),
+                    cursor.getInt(cursor.getColumnIndex("proId")),
+                    cursor.getString(cursor.getColumnIndex("SNome")),
+                    cursor.getInt(cursor.getColumnIndex("SQtddeSaidaTotal")), // Coluna nova
+                    cursor.getDouble(cursor.getColumnIndex("SPrecoTotalSaida"))
+            );
+            lista2.add(item);
+        }
+        cursor.close();
+        return lista2;
+
+    }public List<SaidaTotalModel> obterTodasSaidasAcumuladas3() {
+        List<SaidaTotalModel> lista3 = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("SELECT SaiId, proId, SNome, SQtddeSaidaTotal, SPrecoTotalSaida FROM saidasTotais ORDER BY 5 DESC", null);
+        while (cursor.moveToNext()) {
+            @SuppressLint("Range") SaidaTotalModel item = new SaidaTotalModel(
+                    cursor.getInt(cursor.getColumnIndex("SaiId")),
+                    cursor.getInt(cursor.getColumnIndex("proId")),
+                    cursor.getString(cursor.getColumnIndex("SNome")),
+                    cursor.getInt(cursor.getColumnIndex("SQtddeSaidaTotal")), // Coluna nova
+                    cursor.getDouble(cursor.getColumnIndex("SPrecoTotalSaida"))
+            );
+            lista3.add(item);
+        }
+        cursor.close();
+        return lista3;
     }
     /// LIMPA TUDO
     public boolean limparTodasSaidasTotais() {
@@ -176,10 +209,73 @@ public class ProdutoDAO {
      * @return Lista de modelos de saída
      */
     @SuppressLint("Range")
+    public List<SaidaModel> obterTodasSaidasnome() {
+        List<SaidaModel> saidas = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("SELECT saidaId, proNome, quantidadeVendida, precoTotal, dataSaida FROM saida_logica ORDER BY 2", null);
+
+        while (cursor.moveToNext()) {
+            SaidaModel saida = new SaidaModel(
+                    cursor.getInt(0), // saidaId
+                    cursor.getString(1), // proNome
+                    cursor.getInt(2), // quantidadeVendida
+                    cursor.getDouble(3), // precoTotal
+                    cursor.getString(4) // dataSaida
+            );
+            saidas.add(saida);
+        }
+
+        cursor.close();
+        return saidas;
+    }
+    /// ///// quantidade
+    @SuppressLint("Range")
+    public List<SaidaModel> obterTodasSaidasQtd() {
+        List<SaidaModel> saidas = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("SELECT saidaId, proNome, quantidadeVendida, precoTotal, dataSaida FROM saida_logica ORDER BY 3 DESC", null);
+
+        while (cursor.moveToNext()) {
+            SaidaModel saida = new SaidaModel(
+                    cursor.getInt(0), // saidaId
+                    cursor.getString(1), // proNome
+                    cursor.getInt(2), // quantidadeVendida
+                    cursor.getDouble(3), // precoTotal
+                    cursor.getString(4) // dataSaida
+            );
+            saidas.add(saida);
+        }
+
+        cursor.close();
+        return saidas;
+    }
+    ////////////// preco
+    @SuppressLint("Range")
     public List<SaidaModel> obterTodasSaidas() {
         List<SaidaModel> saidas = new ArrayList<>();
 
-        Cursor cursor = db.rawQuery("SELECT saidaId, proNome, quantidadeVendida, precoTotal, dataSaida FROM saida_logica", null);
+        Cursor cursor = db.rawQuery("SELECT saidaId, proNome, quantidadeVendida, precoTotal, dataSaida FROM saida_logica ORDER BY 4 DESC", null);
+
+        while (cursor.moveToNext()) {
+            SaidaModel saida = new SaidaModel(
+                    cursor.getInt(0), // saidaId
+                    cursor.getString(1), // proNome
+                    cursor.getInt(2), // quantidadeVendida
+                    cursor.getDouble(3), // precoTotal
+                    cursor.getString(4) // dataSaida
+            );
+            saidas.add(saida);
+        }
+
+        cursor.close();
+        return saidas;
+    }
+    ///// data
+    @SuppressLint("Range")
+    public List<SaidaModel> obterTodasSaidasdata() {
+        List<SaidaModel> saidas = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("SELECT saidaId, proNome, quantidadeVendida, precoTotal, dataSaida FROM saida_logica ORDER BY 5 DESC", null);
 
         while (cursor.moveToNext()) {
             SaidaModel saida = new SaidaModel(

@@ -123,7 +123,7 @@ public class ListaProdutos extends Fragment implements ProAdapter.OnProActionLis
                          "SELECT p.proId, p.proImg, p.proNome, p.proQtddeTotal, p.proPreco, c.catNome " +
                                  "FROM produtos p " +
                                  "LEFT JOIN categorias c ON p.catId = c.catId " +  // Junção com categorias
-                                 "WHERE p.proNome LIKE ? OR c.catNome LIKE ?",      // Filtra por nome do produto OU categoria
+                                 "WHERE p.proNome LIKE ? OR c.catNome LIKE ? ORDER BY 3, 6",      // Filtra por nome do produto OU categoria
                          new String[]{"%" + texto + "%", "%" + texto + "%"} // Mesmo texto para ambos os campos
                  )) {
 
@@ -169,7 +169,7 @@ public class ListaProdutos extends Fragment implements ProAdapter.OnProActionLis
                 db = dbHelper.getReadableDatabase(); // Abertura do banco em modo leitura
 
                 // Consulta os dados necessários da tabela "produtos"
-                cursor = db.rawQuery("SELECT proId, proImg, proNome, proQtddeTotal, proPreco FROM produtos", null);
+                cursor = db.rawQuery("SELECT proId, proImg, proNome, proQtddeTotal, proPreco FROM produtos ORDER BY 4 ", null);
 
                 // Lê os dados do cursor e adiciona na lista
                 while (cursor.moveToNext()) {

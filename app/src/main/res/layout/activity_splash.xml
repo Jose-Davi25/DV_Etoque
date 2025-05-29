@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#454343"
+    android:background="#951E1E"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".SplashActivity">
@@ -13,16 +13,16 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        android:src="@drawable/logo06" />
+        android:src="@drawable/logo07" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:text="   Bem Vindo"
         android:textColor="@color/black"
         android:textSize="48sp"
-        android:textStyle="bold"
-        android:fontFamily="sans-serif-condensed-medium"/>
+        android:textStyle="bold" />
 
 </LinearLayout> 

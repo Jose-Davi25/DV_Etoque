@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,7 @@ public class TabelaSaidaProdutos extends Fragment {
     private SaidaAdapter adapter;       // Adapter para o RecyclerView
     private ProdutoDAO dao;            // Camada de acesso a dados
     private RecyclerView recyclerView;  // Lista de exibição
+    private TextView listName, listQtd, listPrice, listDate;
 
     // Cria a view do fragmento
     @Override
@@ -46,6 +48,8 @@ public class TabelaSaidaProdutos extends Fragment {
         configurarRecyclerView();
         configurarListeners();
         carregarDadosIniciais();
+
+        // BOTÕES DE ORDENAÇÃO
     }
 
     // Inicializa referências aos componentes da UI
@@ -53,8 +57,71 @@ public class TabelaSaidaProdutos extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerSaidas);
         dao = new ProdutoDAO(requireContext());
 
+        // CHAMANDO TEXTVIEWS DO BOTÕES
+        listName = view.findViewById(R.id.tv_listName);
+        listQtd = view.findViewById(R.id.tv_listQtd);
+        listPrice = view.findViewById(R.id.tv_listPrice);
+        listDate = view.findViewById(R.id.tv_listDate);
+        // CRIANDO LISTEINERS
+        listName.setOnClickListener( v -> OrderByName());
+        listQtd.setOnClickListener( v -> OrderByQtd());
+        listPrice.setOnClickListener( v -> OrderByPrice());
+        listDate.setOnClickListener( v -> OrderByDate());
+
         // Configura o clique no botão de limpar tudo
         view.findViewById(R.id.btnLimpar).setOnClickListener(v -> limparTodasSaidas());
+    }
+
+    private void OrderByName() {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            // Obtém dados do banco em background
+            List<SaidaModel> dados = dao.obterTodasSaidasnome();
+
+            // Atualiza UI na thread principal
+            requireActivity().runOnUiThread(() -> {
+                adapter.atualizarLista(dados);
+                if (dados.isEmpty()) mostrarListaVazia();
+            });
+        });
+    }
+
+    private void OrderByQtd() {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            // Obtém dados do banco em background
+            List<SaidaModel> dados = dao.obterTodasSaidasQtd();
+
+            // Atualiza UI na thread principal
+            requireActivity().runOnUiThread(() -> {
+                adapter.atualizarLista(dados);
+                if (dados.isEmpty()) mostrarListaVazia();
+            });
+        });
+    }
+
+    private void OrderByPrice() {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            // Obtém dados do banco em background
+            List<SaidaModel> dados = dao.obterTodasSaidas();
+
+            // Atualiza UI na thread principal
+            requireActivity().runOnUiThread(() -> {
+                adapter.atualizarLista(dados);
+                if (dados.isEmpty()) mostrarListaVazia();
+            });
+        });
+    }
+
+    private void OrderByDate() {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            // Obtém dados do banco em background
+            List<SaidaModel> dados = dao.obterTodasSaidasdata();
+
+            // Atualiza UI na thread principal
+            requireActivity().runOnUiThread(() -> {
+                adapter.atualizarLista(dados);
+                if (dados.isEmpty()) mostrarListaVazia();
+            });
+        });
     }
 
     // Configura o RecyclerView e seu adapter
