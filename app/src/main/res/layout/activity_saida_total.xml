@@ -23,16 +23,34 @@
             app:title="Historico de Saídas Acumuladas"
             app:titleTextColor="@android:color/white"/>
 
-        <!-- Botão de limpar -->
-        <Button
-            android:id="@+id/btnLimparSaidasTotais"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Limpar Tudo"
-            android:backgroundTint="#fff00000"
-            android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:layout_margin="8dp"/>
+            android:orientation="horizontal">
+            <!-- Botão de Aquivo Ecxel -->
+            <Button
+                android:id="@+id/btnCriarAquivoEcxel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Gerar Ecxel"
+                android:backgroundTint="@color/green2"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:layout_margin="3dp"/>
+
+            <!-- Botão de limpar -->
+            <Button
+                android:id="@+id/btnLimparSaidasTotais"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Limpar Tudo"
+                android:backgroundTint="#fff00000"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:layout_margin="3dp"/>
+        </LinearLayout>
 
         <TableLayout
             android:layout_width="match_parent"
@@ -81,7 +99,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerSaidasEntradas"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:clipToPadding="false"
             android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

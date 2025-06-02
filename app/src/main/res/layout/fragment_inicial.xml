@@ -247,7 +247,7 @@
             android:drawableTop="@drawable/ic_pesquisar"
             android:gravity="center"
             android:padding="14dp"
-            android:text="VER HISTORICO DE ENTRADAS E SAIDAS"
+            android:text="VER HISTORICO DE SAIDAS TOTAIS"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ver_estoque"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
