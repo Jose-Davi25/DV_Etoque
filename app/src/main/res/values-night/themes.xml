@@ -1,14 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.DV_Estoque" parent="Theme.Material3.DayNight.NoActionBar">
+
         <!-- Cor de fundo da barra de status e app bar -->
-        <item name="colorPrimary">@color/dark_primary</item>
-        <item name="colorPrimaryVariant">@color/my_dark_secondary</item>
+        <item name="colorPrimary">@color/shape_fixed_color</item>
+
         <!-- Cor dos textos e ícones -->
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorOnBackground">@color/text_primary</item>
 
         <!-- Cor de fundo geral -->
-        <item name="android:windowBackground">@color/dark_primary</item>
+        <item name="android:windowBackground">@color/material_dynamic_secondary20</item>
+        <item name="android:statusBarColor">@color/material_dynamic_secondary20</item>
+        <item name="android:windowLightStatusBar">false</item>
+        
     </style>
 </resources>

@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SaidaTotalActivity"
-    android:background="@color/white">
+    android:background="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,54 +15,60 @@
         android:orientation="vertical">
 
         <!-- Título da tela -->
-        <com.google.android.material.appbar.MaterialToolbar
+
+        <!-- Botões superiores -->
+        <TextView
             android:id="@+id/toolbarES"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            app:title="Historico de Saídas Acumuladas"
-            app:titleTextColor="@android:color/white"/>
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:text="Relatório de Saídas"
+            android:textColor="@color/corTitulo"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
-            <!-- Botão de Aquivo Ecxel -->
+
             <Button
                 android:id="@+id/btnCriarAquivoEcxel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="3dp"
                 android:layout_weight="1"
-                android:text="Gerar Ecxel"
-                android:backgroundTint="@color/green2"
+                android:background="@color/green2"
+                android:text="Gerar Excel"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:layout_margin="3dp"/>
+                android:textSize="18sp" />
 
-            <!-- Botão de limpar -->
             <Button
                 android:id="@+id/btnLimparSaidasTotais"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Limpar Tudo"
-                android:backgroundTint="#fff00000"
+                android:background="#fff00000"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:layout_margin="3dp"/>
         </LinearLayout>
 
+        <!-- Cabeçalho da tabela -->
         <TableLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:stretchColumns="*"
-            android:background="@android:color/white"
+            android:elevation="2dp"
             android:padding="4dp"
-            android:elevation="2dp">
+            android:stretchColumns="*">
 
             <TableRow
-                android:background="#DDDDDD"
-                android:padding="8dp">
+                android:background="@color/white"
+                android:paddingVertical="8dp">
 
                 <TextView
                     android:id="@+id/listNome"
@@ -70,28 +76,26 @@
                     android:gravity="center"
                     android:text="Produto"
                     android:textColor="@color/colorPrimary"
-                    android:textStyle="bold"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/listQtdTotal"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Qtdde Saidas"
+                    android:text="Qtd Saidas"
                     android:textColor="@color/colorPrimary"
-                    android:textStyle="bold"
-                    android:textSize="20sp" />
-
-
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
 
                 <TextView
                     android:id="@+id/listPriceTotal"
                     android:layout_weight="2"
                     android:gravity="center"
-                    android:text="Preco Total S."
+                    android:text="Total S."
                     android:textColor="@color/colorPrimary"
-                    android:textStyle="bold"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
             </TableRow>
         </TableLayout>
 
@@ -104,7 +108,7 @@
             android:clipToPadding="false"
             android:scrollbars="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:ignore="SpeakableTextPresentCheck"/>
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
