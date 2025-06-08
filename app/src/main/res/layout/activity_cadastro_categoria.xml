@@ -1,22 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="16dp"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:gravity="top"
+    android:orientation="vertical"
+    android:padding="24dp">
 
+    <!-- Título -->
+    <TextView
+        android:id="@+id/tvTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="34dp"
+        android:text="Nova Categoria"
+        android:textColor="@color/corTitulo"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <!-- Campo de entrada com fundo personalizado -->
     <EditText
         android:id="@+id/etNomeCategoria"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nome da categoria" />
+        android:background="@drawable/rounded_edittext"
+        android:hint="Digite o nome da categoria"
+        android:inputType="textCapWords"
+        android:padding="12dp"
+        android:textColor="@android:color/black"
+        android:textColorHint="#AA000000" />
 
+    <!-- Botão estilizado -->
     <Button
         android:id="@+id/btnSalvarCategoria"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Salvar"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="24dp"
+        android:background="@drawable/rounded_button"
+        android:padding="10dp"
+        android:textAllCaps="false"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:text="Salvar Categoria"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

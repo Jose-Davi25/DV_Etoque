@@ -14,13 +14,19 @@
         android:orientation="vertical">
 
         <!-- Título da tela -->
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+        <TextView
+            android:id="@+id/textView3"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
-            app:title="Histórico de Saídas"
-            app:titleTextColor="@android:color/white"/>
+            android:paddingTop="50dp"
+            android:paddingHorizontal="10dp"
+            android:paddingBottom="10dp"
+            android:text="Histórioco de Saídas"
+            android:textColor="@color/white"
+            android:textSize="22dp"
+            android:textStyle="bold" />
+
 
         <!-- Botão de limpar -->
         <Button

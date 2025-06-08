@@ -36,15 +36,22 @@
     <color name="card_green">#E8F5E9</color>
     <color name="card_gray">#EEEEEE</color>
     <color name="dados">#4D4D4D</color>
-    <color name="titulo">#FB4141</color>
+    <color name="titulo">#615A5A</color>
     <color name="menuline">#FB4141</color>
     <color name="button_color">#4CAF50</color>
+    <color name="backgound">@color/white</color>
+    <color name="status_bar_custom">#388E3C</color> <!-- Verde -->
+    <color name="deep_red">#fff00000</color>
+    <color name="corTitulo">#388E3C</color>
 
 
-    <color name="background">#FAFAFA</color>
+
+    <color name="background">#A5D6A7</color>
     <color name="green_dark">#367C1A</color>
 
     <color name="linha_clara">#FFFFFF</color>
     <color name="linha_escura">#F2F2F2</color>
+
+    <color name="shape_fixed_color">#4CAF50</color>
 
 </resources>

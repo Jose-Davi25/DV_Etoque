@@ -16,8 +16,8 @@
 <!--    android:layout_width="wrap_content"-->
 <!--    android:layout_height="wrap_content"-->
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:background="@drawable/edit_text_background"
         android:gravity="center|fill"
         android:orientation="horizontal"
@@ -44,7 +44,7 @@
 
 <!--        android:layout_width="140dp"-->
         <LinearLayout
-            android:layout_width="145dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="vertical"
@@ -112,7 +112,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
@@ -165,10 +165,12 @@
 
             <Button
                 android:id="@+id/btnSaida"
-                android:layout_width="126dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#E43E33"
-                android:text="Saida"
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:layout_margin="4dp"
+                android:background="@drawable/rounded_button"
+                android:text="Saída"
+                android:textAllCaps="false"
                 android:textSize="18sp" />
 
         </LinearLayout>

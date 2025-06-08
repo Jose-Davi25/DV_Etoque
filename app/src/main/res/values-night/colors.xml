@@ -6,7 +6,7 @@
     <color name="black">#000000</color>
     <color name="text_primary">#E0E0E0</color>
     <color name="text_secondary">#B0B0B0</color>
-
+    <color name="deep_red">#fff00000</color>
 
 
     <!-- cores que mudam -->
@@ -16,8 +16,11 @@
     <color name="card_green">#294D3A</color>
     <color name="card_gray">#4D4D4D</color>
     <color name="dados">#DCDCDC</color>
-    <color name="titulo">#4CAF50</color>
+    <color name="titulo">#B6B6B6</color>
     <color name="menuline">#4CAF50</color>
     <color name="button_color">#4CAF50</color>
+    <color name="background">#2A3042</color>
+    <color name="corTitulo">#4CAF50</color>
+    <color name="shape_fixed_color">#4CAF50</color>
 
 </resources>
