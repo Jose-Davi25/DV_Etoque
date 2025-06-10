@@ -315,6 +315,12 @@ public class CadastrarProdutos extends Fragment {
             escrita.close();
 
             if (resultado != -1) {
+                // Acumular na tabela de entradas totais
+                long novoProId = resultado;
+                double valorTotalEntrada = quantidade * preco;
+                new ProdutoDAO(requireContext())
+                        .acumularEntradaTotal((int) novoProId, quantidade, valorTotalEntrada);
+
                 Toast.makeText(getContext(), "Produto cadastrado com sucesso", Toast.LENGTH_SHORT).show();
                 limparCampos();
                 if (getActivity() instanceof MainActivity) {
@@ -391,6 +397,13 @@ public class CadastrarProdutos extends Fragment {
             // Só atualiza quantidade se houver mudança
             if (quantidadeAdicional != 0) {
                 valores.put("proQtddeTotal", novaQuantidade);
+
+                // Acumular apenas novas entradas (quantidades positivas)
+                if (quantidadeAdicional > 0) {
+                    double valorTotalEntrada = quantidadeAdicional * preco;
+                    new ProdutoDAO(requireContext())
+                            .acumularEntradaTotal(proId, quantidadeAdicional, valorTotalEntrada);
+                }
             }
 
             if (proImagem.getDrawable() != null) {

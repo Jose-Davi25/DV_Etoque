@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
+import com.example.dv_estoque.Models.EntradaTotalModel;
 import com.example.dv_estoque.Models.SaidaTotalModel;
 import com.example.dv_estoque.Models.ProModel;
 
@@ -186,6 +187,11 @@ public class ProdutoDAO {
         int linhasAfetadas = db.delete("saidasTotais", null, null);
         return linhasAfetadas > 0;
     }
+
+    public boolean limparTodaEntradasTotais() {
+        int linhasAfetadasEntr = db.delete("entradasTotais", null, null);
+        return linhasAfetadasEntr > 0;
+    }
     /// ///////////////////////////////////////////////////////
 
     // Buscar produto por ID
@@ -291,6 +297,75 @@ public class ProdutoDAO {
         cursor.close();
         return saidas;
     }
+
+    /// /////////////////////
+    // Método para acumular entradas totais
+    public boolean acumularEntradaTotal(int proId, int quantidade, double precoTotal) {
+        try {
+            // Verifica se já existe registro para o produto
+            Cursor cursor = db.rawQuery(
+                    "SELECT EntrQtddeTotal, EntrPrecoTotal FROM entradasTotais WHERE EntrproId = ?",
+                    new String[]{String.valueOf(proId)}
+            );
+
+            if (cursor.moveToFirst()) {
+                // Atualiza registro existente
+                int qtdExistente = cursor.getInt(0);
+                double precoExistente = cursor.getDouble(1);
+
+                ContentValues values = new ContentValues();
+                values.put("EntrQtddeTotal", qtdExistente + quantidade);
+                values.put("EntrPrecoTotal", precoExistente + precoTotal);
+
+                return db.update(
+                        "entradasTotais",
+                        values,
+                        "EntrproId = ?",
+                        new String[]{String.valueOf(proId)}
+                ) > 0;
+            } else {
+                // Insere novo registro
+                ContentValues values = new ContentValues();
+                values.put("EntrproId", proId);
+                values.put("EntrQtddeTotal", quantidade);
+                values.put("EntrPrecoTotal", precoTotal);
+
+                // Obtém nome do produto
+                Cursor nomeCursor = db.rawQuery(
+                        "SELECT proNome FROM produtos WHERE proId = ?",
+                        new String[]{String.valueOf(proId)}
+                );
+                if (nomeCursor.moveToFirst()) {
+                    values.put("EntrNome", nomeCursor.getString(0));
+                }
+                nomeCursor.close();
+
+                return db.insert("entradasTotais", null, values) != -1;
+            }
+        } finally {
+            // Não fechar o cursor aqui se já foi fechado dentro do bloco
+        }
+    }
+
+    // Método para obter entradas consolidadas
+    @SuppressLint("Range")
+    public List<EntradaTotalModel> obterTodasEntradasTotais() {
+        List<EntradaTotalModel> lista = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT * FROM entradasTotais", null);
+        while (cursor.moveToNext()) {
+            EntradaTotalModel item = new EntradaTotalModel(
+                    cursor.getInt(cursor.getColumnIndex("EntrId")),
+                    cursor.getInt(cursor.getColumnIndex("EntrproId")),
+                    cursor.getString(cursor.getColumnIndex("EntrNome")),
+                    cursor.getInt(cursor.getColumnIndex("EntrQtddeTotal")),
+                    cursor.getDouble(cursor.getColumnIndex("EntrPrecoTotal"))
+            );
+            lista.add(item);
+        }
+        cursor.close();
+        return lista;
+    }
+    /// /////////////////////
     /**
      * Exclui uma saída específica
      * @param saidaId ID da saída a ser excluída

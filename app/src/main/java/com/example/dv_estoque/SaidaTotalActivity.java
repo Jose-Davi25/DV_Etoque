@@ -172,7 +172,7 @@ public class SaidaTotalActivity extends AppCompatActivity {
     private void limpartudo() {
         new AlertDialog.Builder(this)
                 .setTitle("Limpar Histórico")
-                .setMessage("Deseja apagar todas as entradas e saídas?")
+                .setMessage("Deseja apagar todas as saídas?")
                 .setPositiveButton("Sim", (d, w) -> {
                     if (produtoDAO.limparTodasSaidasTotais()) {
                         carregarDados();
