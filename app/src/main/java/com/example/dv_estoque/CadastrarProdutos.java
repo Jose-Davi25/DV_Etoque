@@ -213,7 +213,8 @@ public class CadastrarProdutos extends Fragment {
             }
 
             proNome.setText(getArguments().getString("proNome"));
-            proquantidade.setText(String.valueOf(getArguments().getInt("proQtddeTotal")));
+            //limpa o campo de quantidade
+            proquantidade.setText("0");
 
             // Formata o preço com vírgula para exibição
             double preco = getArguments().getDouble("proPreco");
@@ -332,6 +333,7 @@ public class CadastrarProdutos extends Fragment {
     }
 
     private void atualizarProduto() {
+
         String nome = proNome.getText().toString().trim();
         String quantidadeStr = proquantidade.getText().toString().trim();
         String precoStr = proPreco.getText().toString().trim();
