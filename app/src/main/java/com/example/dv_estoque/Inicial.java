@@ -39,18 +39,18 @@ public class Inicial extends Fragment {
             }
         });
         // Botão Saidas e Entradas
-        Button btnSaidaEntrada = view.findViewById(R.id.btnSaidaTotal);
-        btnSaidaEntrada.setOnClickListener(new View.OnClickListener() {
+        Button btnSaida = view.findViewById(R.id.btnSaidaTotal);
+        btnSaida.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), SaidaTotalActivity.class);
                 startActivity(intent);
             }
         });
-        Button btnAdicionarEstoque = view.findViewById(R.id.adicionar_estoque);
+        Button bnthistoricoEntradas = view.findViewById(R.id.bnthistoricoEntradas);
 
-        btnAdicionarEstoque.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), EntradaEstoqueActivity.class);
+        bnthistoricoEntradas.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EntradaTotalActivity.class);
             startActivity(intent);
         });
 

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".EntradaTotalActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Título da tela -->
+
+        <!-- Botões superiores -->
+        <TextView
+            android:id="@+id/toolbarES_2"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp"
+            android:text="Relatório de Entradas"
+            android:textColor="@color/corTitulo"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnCriarAquivoEcxel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:background="@color/green2"
+                android:text="Gerar Excel"
+                android:textColor="@android:color/white"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/btnLimparSaidasTotais"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Limpar Tudo"
+                android:background="#fff00000"
+                android:textColor="@android:color/white"
+                android:textSize="18sp"
+                android:layout_margin="3dp"/>
+        </LinearLayout>
+
+        <!-- Cabeçalho da tabela -->
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="2dp"
+            android:padding="4dp"
+            android:stretchColumns="*">
+
+            <TableRow
+                android:background="@color/white"
+                android:paddingVertical="8dp">
+
+                <TextView
+                    android:id="@+id/listNomeEnt"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="Produto"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/listQtdTotalEnt"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="Qtd Entradas"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/listPriceTotalEnt"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:text="Total E."
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+            </TableRow>
+        </TableLayout>
+
+        <!-- Lista de saídas -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerEntradas"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:clipToPadding="false"
+            android:scrollbars="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:ignore="SpeakableTextPresentCheck"/>
+    </LinearLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

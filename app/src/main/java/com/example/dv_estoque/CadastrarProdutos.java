@@ -41,6 +41,8 @@ import android.widget.Toast;
 import com.example.dv_estoque.DataBase.DataBase;
 import com.example.dv_estoque.DataBase.ProdutoDAO;
 
+import org.apache.xmlbeans.impl.store.Cur;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -334,7 +336,8 @@ public class CadastrarProdutos extends Fragment {
         String quantidadeStr = proquantidade.getText().toString().trim();
         String precoStr = proPreco.getText().toString().trim();
 
-        if (nome.isEmpty() || quantidadeStr.isEmpty() || precoStr.isEmpty()) {
+        // Validações (quantidade não é mais obrigatória)
+        if (nome.isEmpty() || precoStr.isEmpty()) { // Removida verificação de quantidade
             Toast.makeText(getContext(), "Preencha todos os campos", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -347,22 +350,59 @@ public class CadastrarProdutos extends Fragment {
         int catId = categoriasId.get(posCategoria);
 
         try {
-            int quantidade = Integer.parseInt(quantidadeStr);
+            int quantidadeAdicional = quantidadeStr.isEmpty() ? 0 : Integer.parseInt(quantidadeStr); //valor padrao 0
             double preco = Double.parseDouble(precoStr.replace(",", "."));
+
+            // Busca quantidade ATUAL do produto
+            int quantidadeAtual = 0;
+            SQLiteDatabase leitura = db.getReadableDatabase();
+            Cursor cursor = leitura.query(
+                    "produtos",
+                    new String[]{"proQtddeTotal"},
+                    "proId = ?",
+                    new String[]{String.valueOf(proId)},
+                    null, null, null
+            );
+
+            if (cursor.moveToFirst()) {
+                quantidadeAtual = cursor.getInt(cursor.getColumnIndexOrThrow("proQtddeTotal"));
+            }
+            cursor.close();
+            leitura.close();
+
+            // Calcula nova quantidade (mantém atual se não houver alteração)
+            int novaQuantidade = quantidadeAtual;
+            if (quantidadeAdicional != 0) {
+                novaQuantidade = quantidadeAtual + quantidadeAdicional;
+                if (novaQuantidade < 0) { // Evita valores negativos
+                    Toast.makeText(getContext(), "Quantidade inválida", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
 
             SQLiteDatabase escrita = db.getWritableDatabase();
             ContentValues valores = new ContentValues();
             valores.put("proNome", nome);
-            valores.put("proQtddeTotal", quantidade);
             valores.put("proPreco", preco);
             valores.put("catId", catId);
+
+            // Só atualiza quantidade se houver mudança
+            if (quantidadeAdicional != 0) {
+                valores.put("proQtddeTotal", novaQuantidade);
+            }
 
             if (proImagem.getDrawable() != null) {
                 valores.put("proImg", ImageViewToByte(proImagem));
             }
 
-            int linhasAfetadas = escrita.update("produtos", valores, "proId = ?", new String[]{String.valueOf(proId)});
+            int linhasAfetadas = escrita.update(
+                    "produtos",
+                    valores,
+                    "proId = ?",
+                    new String[]{String.valueOf(proId)}
+            );
             escrita.close();
+            /// ////////
 
             if (linhasAfetadas > 0) {
                 Toast.makeText(getContext(), "Produto atualizado", Toast.LENGTH_SHORT).show();
