@@ -43,6 +43,7 @@
     <color name="status_bar_custom">#388E3C</color> <!-- Verde -->
     <color name="deep_red">#fff00000</color>
     <color name="corTitulo">#388E3C</color>
+    <color name="cortexto">#373737</color>
 
 
 

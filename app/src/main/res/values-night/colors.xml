@@ -22,5 +22,6 @@
     <color name="background">#2A3042</color>
     <color name="corTitulo">#4CAF50</color>
     <color name="shape_fixed_color">#4CAF50</color>
+    <color name="cortexto">#373737</color>
 
 </resources>

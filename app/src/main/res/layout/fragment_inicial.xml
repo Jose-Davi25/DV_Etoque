@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingBottom="120dp"
-        tools:context=".Inicial">
+        tools:context=".Inicial"
+        android:background="@color/background">
 
         <!-- Título Inicial (agora opcional, mas não interfere mais no layout) -->
         <TextView
@@ -248,14 +249,14 @@
             android:drawableTop="@drawable/ic_pesquisar"
             android:gravity="center"
             android:padding="14dp"
-            android:text="Relatório de Saídas"
+            android:text="RELATÓRIO DE SAÍDAS"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/ver_estoque"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
 
         <Button
-            android:id="@+id/adicionar_produto"
+            android:id="@+id/adicionar_estoque"
             android:layout_width="180dp"
             android:layout_height="140dp"
             android:layout_marginTop="30dp"
@@ -263,7 +264,7 @@
             android:drawableTop="@drawable/ic_adicionar"
             android:gravity="center"
             android:padding="10dp"
-            android:text="ADICIONAR PRODUTO"
+            android:text="ADICIONAR ENTRADA"
             android:textColor="@color/white"
             app:layout_constraintEnd_toStartOf="@+id/btnCategorias"
             app:layout_constraintStart_toStartOf="parent"
@@ -282,7 +283,7 @@
             android:textColor="@color/white"
             app:iconTint="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/adicionar_produto"
+            app:layout_constraintStart_toEndOf="@+id/adicionar_estoque"
             app:layout_constraintTop_toBottomOf="@+id/btnSaidaEntrada" />
 
         <androidx.appcompat.widget.Toolbar
