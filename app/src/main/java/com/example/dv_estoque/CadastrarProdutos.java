@@ -220,14 +220,12 @@ public class CadastrarProdutos extends Fragment {
         }
 
         try {
-            // Validação e conversão da quantidade
             int quantidade = Integer.parseInt(quantidadeStr);
             if (quantidade < 0) {
                 Toast.makeText(getContext(), "Quantidade não pode ser negativa", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Validação e formatação do preço
             precoStr = precoStr.replace(",", ".");
             if (precoStr.startsWith(".") || precoStr.endsWith(".")) {
                 Toast.makeText(getContext(), "Formato de preço inválido", Toast.LENGTH_SHORT).show();
@@ -240,7 +238,19 @@ public class CadastrarProdutos extends Fragment {
                 return;
             }
 
-            // Preparação dos valores para o banco de dados
+            // Verificar se já existe produto com o mesmo nome
+            SQLiteDatabase leitura = db.getReadableDatabase();
+            Cursor cursor = leitura.rawQuery("SELECT proId FROM produtos WHERE LOWER(proNome) = ?", new String[]{nome.toLowerCase()});
+            if (cursor.moveToFirst()) {
+                cursor.close();
+                leitura.close();
+                Toast.makeText(getContext(), "Já existe um produto com esse nome", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            cursor.close();
+            leitura.close();
+
+            // Preparar valores
             SQLiteDatabase escrita = db.getWritableDatabase();
             ContentValues valores = new ContentValues();
             valores.put("proNome", nome);
@@ -248,31 +258,22 @@ public class CadastrarProdutos extends Fragment {
             valores.put("proPreco", preco);
             valores.put("catId", categoriasId.get(posCategoria));
 
-            // Tratamento da imagem
             if (proImagem.getDrawable() != null &&
                     !((BitmapDrawable)proImagem.getDrawable()).getBitmap().sameAs(
                             BitmapFactory.decodeResource(getResources(), R.drawable.product))) {
                 valores.put("proImg", ImageViewToByte(proImagem));
             }
 
-            // Inserção no banco de dados
             long resultado = escrita.insert("produtos", null, valores);
             escrita.close();
-            int novoProId = (int) resultado; // O próprio insert retorna o ID
 
             if (resultado != -1) {
                 Toast.makeText(getContext(), "Produto cadastrado com sucesso", Toast.LENGTH_SHORT).show();
                 limparCampos();
-
-                // Fechar a conexão após todas as operações
-                escrita.close();
-
-                // Atualizar lista
                 if (getActivity() instanceof MainActivity) {
                     ((MainActivity) getActivity()).recarregarListaProdutos();
                 }
             } else {
-                escrita.close();
                 Toast.makeText(getContext(), "Falha ao cadastrar produto", Toast.LENGTH_SHORT).show();
             }
 

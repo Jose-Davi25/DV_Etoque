@@ -47,6 +47,14 @@ public class Inicial extends Fragment {
                 startActivity(intent);
             }
         });
+        Button btnAdicionarEstoque = view.findViewById(R.id.adicionar_estoque);
+
+        btnAdicionarEstoque.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EntradaEstoqueActivity.class);
+            startActivity(intent);
+        });
+
+
         // verificar esses error
 
 //        // Botão para ir para a tela de CadastrarProdutos
