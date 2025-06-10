@@ -1,8 +1,12 @@
 package com.example.dv_estoque;
 
+import static androidx.core.content.ContextCompat.checkSelfPermission;
+
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -10,8 +14,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.Manifest;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -49,6 +58,8 @@ public class CadastrarProdutos extends Fragment {
 
     private static final int PICK_IMAGE = 100;
 
+    private static final int PERMISSION_REQUEST_CODE = 200;
+
     // Para guardar categorias e seus IDs
     private List<String> categoriasNome;
     private List<Integer> categoriasId;
@@ -57,6 +68,30 @@ public class CadastrarProdutos extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cadastrar_produtos, container, false);
 
+        // Verificação de permissão para Android 6.0+ (Marshmallow)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                // Verifica se devemos mostrar a explicação
+                if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    // Explica ao usuário porque a permissão é necessária
+                    new AlertDialog.Builder(requireContext())
+                            .setTitle("Permissão necessária")
+                            .setMessage("Esta permissão é necessária para acessar fotos da galeria")
+                            .setPositiveButton("OK", (dialog, which) -> requestPermissions(
+                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                    PERMISSION_REQUEST_CODE))
+                            .setNegativeButton("Cancelar", null)
+                            .create()
+                            .show();
+                } else {
+                    requestPermissions(
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                            PERMISSION_REQUEST_CODE);
+                }
+            }
+        }
         // Inicializa componentes
         proNome = view.findViewById(R.id.proCadNome);
         proImagem = view.findViewById(R.id.proImagemView);
@@ -81,6 +116,16 @@ public class CadastrarProdutos extends Fragment {
         return view;
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(requireContext(), "Permissão concedida", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(requireContext(), "Permissão negada", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
     private void configurarCampoPreco() {
         proPreco.addTextChangedListener(new TextWatcher() {
             @Override
@@ -99,7 +144,6 @@ public class CadastrarProdutos extends Fragment {
                     proPreco.setSelection(newText.length());
                 }
             }
-
             @Override
             public void afterTextChanged(Editable s) {}
         });

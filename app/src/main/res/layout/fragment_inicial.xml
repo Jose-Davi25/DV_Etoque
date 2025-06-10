@@ -236,12 +236,12 @@
             android:text="VER ESTOQUE"
             android:textColor="@color/white"
             app:iconSize="18dp"
-            app:layout_constraintEnd_toStartOf="@+id/btnSaidaEntrada"
+            app:layout_constraintEnd_toStartOf="@+id/btnSaidaTotal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
         <Button
-            android:id="@+id/btnSaidaEntrada"
+            android:id="@+id/btnSaidaTotal"
             android:layout_width="180dp"
             android:layout_height="140dp"
             android:layout_marginTop="55dp"
@@ -284,7 +284,7 @@
             app:iconTint="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/adicionar_estoque"
-            app:layout_constraintTop_toBottomOf="@+id/btnSaidaEntrada" />
+            app:layout_constraintTop_toBottomOf="@+id/btnSaidaTotal" />
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar2"
