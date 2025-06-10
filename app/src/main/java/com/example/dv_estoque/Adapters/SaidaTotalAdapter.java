@@ -25,7 +25,7 @@ public class SaidaTotalAdapter extends RecyclerView.Adapter<SaidaTotalAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.item_saida_entrada, parent, false);
+                .inflate(R.layout.item_saida_total, parent, false);
         return new ViewHolder(view);
     }
 

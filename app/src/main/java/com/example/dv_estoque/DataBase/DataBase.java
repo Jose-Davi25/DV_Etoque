@@ -44,6 +44,15 @@ public class DataBase extends SQLiteOpenHelper {
                         "SQtddeSaidaTotal INTEGER DEFAULT 0, " +
                         "SPrecoTotalSaida REAL DEFAULT 0)");
 
+        // Criação da tabela para controle de Entradas totais de estoque
+        db.execSQL(
+                "CREATE TABLE entradasTotais (" +
+                        "EntrId INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        "EntrproId INTEGER, " +
+                        "EntrNome TEXT, " +
+                        "EntrQtddeTotal INTEGER DEFAULT 0, " +
+                        "EntrPrecoTotal REAL DEFAULT 0)");
+
         // Criação da tabela de saída lógica
         db.execSQL(
                 "CREATE TABLE IF NOT EXISTS saida_logica (" +
