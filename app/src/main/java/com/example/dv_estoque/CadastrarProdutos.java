@@ -352,7 +352,7 @@ public class CadastrarProdutos extends Fragment {
 
             if (proImagem.getDrawable() != null &&
                     !((BitmapDrawable)proImagem.getDrawable()).getBitmap().sameAs(
-                            BitmapFactory.decodeResource(getResources(), R.drawable.product))) {
+                            BitmapFactory.decodeResource(getResources(), R.drawable.ic_image))) {
                 valores.put("proImg", ImageViewToByte(proImagem));
             }
 
@@ -489,7 +489,7 @@ public class CadastrarProdutos extends Fragment {
         proNome.setText("");
         proquantidade.setText("");
         proPreco.setText("");
-        proImagem.setImageResource(R.drawable.product);
+        proImagem.setImageResource(R.drawable.ic_image);
         spinnerCategoria.setSelection(0);
         proId = 0;
     }

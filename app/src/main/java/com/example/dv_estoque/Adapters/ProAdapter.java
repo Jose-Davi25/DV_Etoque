@@ -131,10 +131,10 @@ public class ProAdapter extends RecyclerView.Adapter<ProAdapter.ViewHolder> {
                                 proModel.getProImagem(), 0, proModel.getProImagem().length);
                         proImagem.setImageBitmap(bitmap);
                     } else {
-                        proImagem.setImageResource(R.drawable.product);
+                        proImagem.setImageResource(R.drawable.ic_image);
                     }
                 } catch (Exception e) {
-                    proImagem.setImageResource(R.drawable.product);
+                    proImagem.setImageResource(R.drawable.ic_image);
                     Log.e("ProAdapter", "Erro ao carregar imagem", e);
                 }
             }
