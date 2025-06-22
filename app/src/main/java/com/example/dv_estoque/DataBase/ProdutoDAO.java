@@ -73,27 +73,7 @@ public class ProdutoDAO {
         return resultado != -1;
     }
 
-    @SuppressLint("Range")
-    public List<ProModel> obterTodosProdutos() {
-        List<ProModel> lista = new ArrayList<>();
-
-        Cursor cursor = db.rawQuery("SELECT * FROM produtos", null);
-        if (cursor.moveToFirst()) {
-            do {
-                ProModel p = new ProModel();
-                p.setProId(cursor.getInt(cursor.getColumnIndex("proId")));
-                p.setProNome(cursor.getString(cursor.getColumnIndex("proNome")));
-                p.setProQuantidade(cursor.getInt(cursor.getColumnIndex("proQtddeTotal")));
-                p.setProPreco(cursor.getDouble(cursor.getColumnIndex("proPreco")));
-                lista.add(p);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        return lista;
-    }
-    /// /////////////////////////////////////////////////////////////
-    // Método para acumular saídas
+    /// Método para acumular saídas
     public boolean acumularSaidaTotal(int proId, int quantidadeSaida, double precoTotal) {
         try {
             ContentValues values = new ContentValues();
@@ -130,6 +110,7 @@ public class ProdutoDAO {
             return false;
         }
     }
+    /// PARA A TABELA DE HITORICO DE SAIDAS TOTAIS
     // Obter dados ajustado
     @SuppressLint("Range")
     public List<SaidaTotalModel> obterTodasSaidasAcumuladas() {
@@ -148,7 +129,8 @@ public class ProdutoDAO {
         }
         cursor.close();
         return lista;
-    }public List<SaidaTotalModel> obterTodasSaidasAcumuladas2() {
+    }
+    public List<SaidaTotalModel> obterTodasSaidasAcumuladas2() {
         List<SaidaTotalModel> lista2 = new ArrayList<>();
 
         Cursor cursor = db.rawQuery("SELECT SaiId, proId, SNome, SQtddeSaidaTotal, SPrecoTotalSaida FROM saidasTotais ORDER BY 3", null);
@@ -194,16 +176,6 @@ public class ProdutoDAO {
     }
     /// ///////////////////////////////////////////////////////
 
-    // Buscar produto por ID
-    public Cursor buscarProdutoPorId(int produtoId) {
-        return db.rawQuery("SELECT * FROM produtos WHERE proId = ?", new String[]{String.valueOf(produtoId)});
-    }
-
-    // Deletar produto
-    public void deletarProduto(int id) {
-        db.delete("produtos", "proId = ?", new String[]{String.valueOf(id)});
-    }
-
     // Fechar banco de dados
     public void close() {
         if (db != null && db.isOpen()) {
@@ -230,7 +202,6 @@ public class ProdutoDAO {
             );
             saidas.add(saida);
         }
-
         cursor.close();
         return saidas;
     }
@@ -251,7 +222,6 @@ public class ProdutoDAO {
             );
             saidas.add(saida);
         }
-
         cursor.close();
         return saidas;
     }
@@ -272,7 +242,6 @@ public class ProdutoDAO {
             );
             saidas.add(saida);
         }
-
         cursor.close();
         return saidas;
     }
@@ -293,11 +262,9 @@ public class ProdutoDAO {
             );
             saidas.add(saida);
         }
-
         cursor.close();
         return saidas;
     }
-
     /// /////////////////////
     // Método para acumular entradas totais
     public boolean acumularEntradaTotal(int proId, int quantidade, double precoTotal) {
@@ -352,6 +319,61 @@ public class ProdutoDAO {
     public List<EntradaTotalModel> obterTodasEntradasTotais() {
         List<EntradaTotalModel> lista = new ArrayList<>();
         Cursor cursor = db.rawQuery("SELECT * FROM entradasTotais", null);
+        while (cursor.moveToNext()) {
+            EntradaTotalModel item = new EntradaTotalModel(
+                    cursor.getInt(cursor.getColumnIndex("EntrId")),
+                    cursor.getInt(cursor.getColumnIndex("EntrproId")),
+                    cursor.getString(cursor.getColumnIndex("EntrNome")),
+                    cursor.getInt(cursor.getColumnIndex("EntrQtddeTotal")),
+                    cursor.getDouble(cursor.getColumnIndex("EntrPrecoTotal"))
+            );
+            lista.add(item);
+        }
+        cursor.close();
+        return lista;
+    }
+    /// por nome
+    @SuppressLint("Range")
+    public List<EntradaTotalModel> obterTodasEntradasTotaisNome() {
+        List<EntradaTotalModel> lista = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT * FROM entradasTotais ORDER BY EntrNome", null);
+        while (cursor.moveToNext()) {
+            EntradaTotalModel item = new EntradaTotalModel(
+                    cursor.getInt(cursor.getColumnIndex("EntrId")),
+                    cursor.getInt(cursor.getColumnIndex("EntrproId")),
+                    cursor.getString(cursor.getColumnIndex("EntrNome")),
+                    cursor.getInt(cursor.getColumnIndex("EntrQtddeTotal")),
+                    cursor.getDouble(cursor.getColumnIndex("EntrPrecoTotal"))
+            );
+            lista.add(item);
+        }
+        cursor.close();
+        return lista;
+    }
+    /// por quantidade
+
+    @SuppressLint("Range")
+    public List<EntradaTotalModel> obterTodasEntradasTotaisQtdde() {
+        List<EntradaTotalModel> lista = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT * FROM entradasTotais ORDER BY EntrQtddeTotal DESC", null);
+        while (cursor.moveToNext()) {
+            EntradaTotalModel item = new EntradaTotalModel(
+                    cursor.getInt(cursor.getColumnIndex("EntrId")),
+                    cursor.getInt(cursor.getColumnIndex("EntrproId")),
+                    cursor.getString(cursor.getColumnIndex("EntrNome")),
+                    cursor.getInt(cursor.getColumnIndex("EntrQtddeTotal")),
+                    cursor.getDouble(cursor.getColumnIndex("EntrPrecoTotal"))
+            );
+            lista.add(item);
+        }
+        cursor.close();
+        return lista;
+    }
+    /// por preco
+    @SuppressLint("Range")
+    public List<EntradaTotalModel> obterTodasEntradasTotaisPreco() {
+        List<EntradaTotalModel> lista = new ArrayList<>();
+        Cursor cursor = db.rawQuery("SELECT * FROM entradasTotais ORDER BY EntrPrecoTotal DESC", null);
         while (cursor.moveToNext()) {
             EntradaTotalModel item = new EntradaTotalModel(
                     cursor.getInt(cursor.getColumnIndex("EntrId")),

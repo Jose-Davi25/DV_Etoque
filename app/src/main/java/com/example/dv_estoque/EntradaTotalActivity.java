@@ -38,7 +38,7 @@ public class EntradaTotalActivity extends AppCompatActivity {
 
     private static final Logger log = LogManager.getLogger(EntradaTotalActivity.class);
     private RecyclerView recyclerView;
-    private EntradaTotalAdapter adapter;
+    private EntradaTotalAdapter entradaAdapter;
     private ProdutoDAO produtoDAO;
 
     private Button limparTudoEntr, gerarEcxelEntr;
@@ -163,20 +163,23 @@ public class EntradaTotalActivity extends AppCompatActivity {
 
     private void carregarEntradasTotais() {
         List<EntradaTotalModel> entradas = produtoDAO.obterTodasEntradasTotais();
-        adapter = new EntradaTotalAdapter(this, R.layout.item_entrada_total, entradas);
-        recyclerView.setAdapter(adapter);
+        entradaAdapter = new EntradaTotalAdapter(this, R.layout.item_entrada_total, entradas);
+        recyclerView.setAdapter(entradaAdapter);
     }
 
     private void ordenarPorNomeEntr() {
-
+        List<EntradaTotalModel> list1 = produtoDAO.obterTodasEntradasTotaisNome(); // Método alterado
+        entradaAdapter.atualizar(list1);
     }
 
     private void ordenarPorQtdEntr() {
-
+        List<EntradaTotalModel> list2 = produtoDAO.obterTodasEntradasTotaisQtdde(); // Método alterado
+        entradaAdapter.atualizar(list2);
     }
 
     private void ordenarPorPrecoEntr() {
-
+        List<EntradaTotalModel> list3 = produtoDAO.obterTodasEntradasTotaisPreco(); // Método alterado
+        entradaAdapter.atualizar(list3);
     }
     @Override
     protected void onDestroy() {
