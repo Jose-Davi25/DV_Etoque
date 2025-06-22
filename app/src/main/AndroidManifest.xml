@@ -29,9 +29,6 @@
             android:name=".EntradaTotalActivity"
             android:exported="false" />
         <activity
-            android:name=".EntradaEstoqueActivity"
-            android:exported="false" />
-        <activity
             android:name=".SaidaTotalActivity"
             android:exported="false" />
         <activity

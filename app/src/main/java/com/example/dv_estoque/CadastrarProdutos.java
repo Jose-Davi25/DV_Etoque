@@ -1,7 +1,5 @@
 package com.example.dv_estoque;
 
-import static androidx.core.content.ContextCompat.checkSelfPermission;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -17,14 +15,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.Manifest;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import android.provider.MediaStore;
 import android.text.Editable;
-import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,12 +33,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.dv_estoque.DataBase.DataBase;
 import com.example.dv_estoque.DataBase.ProdutoDAO;
-
-import org.apache.xmlbeans.impl.store.Cur;
-
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,13 +45,14 @@ public class CadastrarProdutos extends Fragment {
     private int proId = 0;
     private EditText proNome, proquantidade, proPreco;
     private ImageView proImagem;
-    private Button btnSalvar, btnAtualizar, btnGaleria;
+    private TextView textCad, textEdit;
+    private Button btnSalvar, btnAtualizar, btnGaleria, btnCamera;
     private Spinner spinnerCategoria;
     private DataBase db;
     private ProdutoDAO dao;
 
     private static final int PICK_IMAGE = 100;
-
+    private static final int REQUEST_IMAGE_CAPTURE = 101;
     private static final int PERMISSION_REQUEST_CODE = 200;
 
     // Para guardar categorias e seus IDs
@@ -99,10 +92,15 @@ public class CadastrarProdutos extends Fragment {
         proImagem = view.findViewById(R.id.proImagemView);
         proquantidade = view.findViewById(R.id.proCadQuantidade);
         proPreco = view.findViewById(R.id.proCadPreco);
+        spinnerCategoria = view.findViewById(R.id.proCadCategoria);
+        ///
         btnSalvar = view.findViewById(R.id.buttonSalvarProduto);
         btnAtualizar = view.findViewById(R.id.buttonAtualizarProduto);
+        textCad = view.findViewById(R.id.textViewCadastro);
+        textEdit = view.findViewById(R.id.textViewAtualizar);
+        ///
+        btnCamera = view.findViewById(R.id.buttonCamera);
         btnGaleria = view.findViewById(R.id.buttonGaleria);
-        spinnerCategoria = view.findViewById(R.id.proCadCategoria);
 
         db = new DataBase(requireContext());
         dao = new ProdutoDAO(requireContext());
@@ -125,6 +123,14 @@ public class CadastrarProdutos extends Fragment {
                 Toast.makeText(requireContext(), "Permissão concedida", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(requireContext(), "Permissão negada", Toast.LENGTH_SHORT).show();
+            }
+        }
+        // Adicionar tratamento para permissão da câmera
+        else if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                abrirCamera(); // Tenta abrir novamente após permissão concedida
+            } else {
+                Toast.makeText(requireContext(), "Permissão da câmera negada", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -198,6 +204,8 @@ public class CadastrarProdutos extends Fragment {
 
     private void configurarListeners() {
         btnGaleria.setOnClickListener(v -> abrirGaleria());
+        btnCamera.setOnClickListener(v -> abrirCamera());
+        ///
         btnSalvar.setOnClickListener(v -> salvarProduto());
         btnAtualizar.setOnClickListener(v -> atualizarProduto());
     }
@@ -230,7 +238,10 @@ public class CadastrarProdutos extends Fragment {
             }
 
             btnSalvar.setVisibility(View.GONE);
+            textCad.setVisibility(View.GONE);
             btnAtualizar.setVisibility(View.VISIBLE);
+            textEdit.setVisibility(View.VISIBLE);
+
         }
     }
 
@@ -238,13 +249,47 @@ public class CadastrarProdutos extends Fragment {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, PICK_IMAGE);
     }
+    private void abrirCamera() {
+        // Verificar se a permissão da câmera foi concedida
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Solicitar permissão se não tiver
+            requestPermissions(
+                    new String[]{Manifest.permission.CAMERA},
+                    REQUEST_IMAGE_CAPTURE
+            );
+        } else {
+            // Permissão já concedida, abrir câmera
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (takePictureIntent.resolveActivity(requireActivity().getPackageManager()) != null) {
+                startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+            } else {
+                Toast.makeText(
+                        requireContext(),
+                        "Nenhum aplicativo de câmera encontrado",
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
+        }
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == PICK_IMAGE && data != null) {
-            Uri imageUri = data.getData();
-            proImagem.setImageURI(imageUri);
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == PICK_IMAGE && data != null) {
+                // Resultado da galeria
+                Uri imageUri = data.getData();
+                proImagem.setImageURI(imageUri);
+            }
+            else if (requestCode == REQUEST_IMAGE_CAPTURE && data != null) {
+                // Resultado da câmera
+                Bundle extras = data.getExtras();
+                Bitmap imageBitmap = (Bitmap) extras.get("data");
+                proImagem.setImageBitmap(imageBitmap);
+            }
         }
     }
 

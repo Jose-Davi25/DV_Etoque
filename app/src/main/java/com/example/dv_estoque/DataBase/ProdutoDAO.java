@@ -7,11 +7,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
-
 import com.example.dv_estoque.Models.EntradaTotalModel;
 import com.example.dv_estoque.Models.SaidaTotalModel;
-import com.example.dv_estoque.Models.ProModel;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;

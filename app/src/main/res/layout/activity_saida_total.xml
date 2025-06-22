@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="3dp"
                 android:layout_weight="1"
-                android:background="@color/green2"
+                android:backgroundTint="@color/green2"
                 android:text="Gerar Excel"
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Limpar Tudo"
-                android:background="#fff00000"
+                android:backgroundTint="#fff00000"
                 android:textColor="@android:color/white"
                 android:textSize="18sp"
                 android:layout_margin="3dp"/>
